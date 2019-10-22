@@ -18,6 +18,12 @@ namespace Project_SQLBuilder
     {
 
         #region standard form functions
+        private void clbOrigTables_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            for (int ix = 0; ix < clbOrigTables.Items.Count; ++ix)
+                if (ix != e.Index) clbOrigTables.SetItemChecked(ix, false);
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
 
@@ -47,16 +53,28 @@ namespace Project_SQLBuilder
         private void lblConnectOrigin_Click(object sender, EventArgs e)
         {
 
-            ConnectOrigin(txtOrigDB.Text, txtOrigSVR.Text, txtOrigPass.Text);
+            clbOrigTables.DataSource = SelectDataOraAsDt(txtOrigDB.Text, txtOrigSVR.Text, txtOrigPass.Text, "table_name, rownum", "user_Tables", null);
+            clbOrigTables.DisplayMember = "table_name";
+            clbOrigTables.ValueMember = "rownum";
 
         }
 
         private void lblConnectDestiny_Click(object sender, EventArgs e)
         {
 
-            ConnectDest(txtDestDB.Text, txtDestSVR.Text, txtDestPass.Text);
+            clbDestTables.DataSource = SelectDataOraAsDt(txtDestDB.Text, txtDestSVR.Text, txtDestPass.Text, "table_name, rownum", "user_Tables", null);
+            clbDestTables.DisplayMember = "table_name";
+            clbDestTables.ValueMember = "rownum";
 
         }
+
+        private void clbOrigTables_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            dgvOrigColumns.DataSource = SelectDataOraAsDt(txtOrigDB.Text, txtOrigSVR.Text, txtOrigPass.Text, "column_name as Coluna, concat(data_type,data_length) as Tipo", "user_tab_columns", "table_name = '" + clbOrigTables.Text + "'");
+
+        }
+
         #endregion
 
         public FormMain()
@@ -64,19 +82,61 @@ namespace Project_SQLBuilder
             InitializeComponent();
         }
 
-        private void ConnectOrigin(string origDB, string origSVR, string origPass)
+        private DataTable SelectDataOraAsDt(string origDB, string origSVR, string origPass, string column, string table, string where)
         {
 
+            OracleCommand cmd = new OracleCommand();
 
+            try
+            {
+
+                string ConString = "Data Source=" + origSVR + ";User Id=" + origDB + ";Password=" + origPass + ";";             
+                using (OracleConnection con = new OracleConnection(ConString))
+                {
+
+                    if (where == null) // sem where
+                    {
+
+                        cmd = new OracleCommand("select " + column + " from " + table, con);
+
+
+                    }
+                    else
+                    {
+
+                        cmd = new OracleCommand("select " + column + " from " + table + " where " + where, con);
+
+                    }
+
+                    OracleDataAdapter oda = new OracleDataAdapter(cmd);
+
+                    DataTable ds = new DataTable();
+
+                    oda.Fill(ds);
+
+                    return ds;
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+                return null;
+
+            }
 
         }
 
-        private void ConnectDest(string destDB, string destSVR, string destPass)
+        private void clbDestTables_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-
+            dgvSelectFields.DataSource = SelectDataOraAsDt(txtDestDB.Text, txtDestSVR.Text, txtDestPass.Text, "null as colOrigColumn, data_default as colDefaultValue, 'as' as colAs, column_name as colDestColumn, concat(data_type,data_length) as colDestColumnType", "user_tab_columns", "table_name = '" + clbDestTables.Text + "'");
 
         }
+
 
     }
 

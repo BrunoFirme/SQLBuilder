@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Project_SQLBuilder
 {
@@ -23,7 +24,7 @@ namespace Project_SQLBuilder
             base.Dispose(disposing);
         }
 
-        #region Screen move util
+        #region Screen move and list editing util
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0X2;
 
@@ -31,6 +32,7 @@ namespace Project_SQLBuilder
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
+
         #endregion
 
         #region Windows Form Designer generated code
@@ -42,6 +44,12 @@ namespace Project_SQLBuilder
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblProgramTitle = new System.Windows.Forms.Label();
             this.btnMinimize = new System.Windows.Forms.Button();
@@ -65,13 +73,29 @@ namespace Project_SQLBuilder
             this.lblDestDB = new System.Windows.Forms.Label();
             this.lblConnectOrigin = new System.Windows.Forms.Label();
             this.lblConnectDestiny = new System.Windows.Forms.Label();
+            this.clbOrigTables = new System.Windows.Forms.CheckedListBox();
+            this.lblExploreTablesOrig = new System.Windows.Forms.Label();
+            this.lblExploreColumnsOrig = new System.Windows.Forms.Label();
+            this.clbDestTables = new System.Windows.Forms.CheckedListBox();
+            this.lblExploreTablesDest = new System.Windows.Forms.Label();
+            this.dgvOrigColumns = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dgvSelectFields = new System.Windows.Forms.DataGridView();
+            this.colOrigColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAs = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDestColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelHeader.SuspendLayout();
             this.Taskbar1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrigColumns)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSelectFields)).BeginInit();
             this.SuspendLayout();
             // 
             // panelHeader
             // 
-            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.panelHeader.Controls.Add(this.lblProgramTitle);
             this.panelHeader.Controls.Add(this.btnMinimize);
             this.panelHeader.Controls.Add(this.btnClose);
@@ -130,7 +154,7 @@ namespace Project_SQLBuilder
             // 
             this.Taskbar1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Taskbar1.AutoSize = false;
-            this.Taskbar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Taskbar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.Taskbar1.Dock = System.Windows.Forms.DockStyle.None;
             this.Taskbar1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
@@ -315,12 +339,251 @@ namespace Project_SQLBuilder
             this.lblConnectDestiny.TabIndex = 16;
             this.lblConnectDestiny.Click += new System.EventHandler(this.lblConnectDestiny_Click);
             // 
+            // clbOrigTables
+            // 
+            this.clbOrigTables.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.clbOrigTables.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.clbOrigTables.ForeColor = System.Drawing.SystemColors.Info;
+            this.clbOrigTables.FormattingEnabled = true;
+            this.clbOrigTables.Location = new System.Drawing.Point(2, 95);
+            this.clbOrigTables.Name = "clbOrigTables";
+            this.clbOrigTables.Size = new System.Drawing.Size(184, 165);
+            this.clbOrigTables.TabIndex = 17;
+            this.clbOrigTables.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbOrigTables_ItemCheck);
+            this.clbOrigTables.SelectedIndexChanged += new System.EventHandler(this.clbOrigTables_SelectedIndexChanged);
+            // 
+            // lblExploreTablesOrig
+            // 
+            this.lblExploreTablesOrig.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblExploreTablesOrig.BackColor = System.Drawing.Color.SteelBlue;
+            this.lblExploreTablesOrig.ForeColor = System.Drawing.Color.White;
+            this.lblExploreTablesOrig.Location = new System.Drawing.Point(2, 65);
+            this.lblExploreTablesOrig.Name = "lblExploreTablesOrig";
+            this.lblExploreTablesOrig.Size = new System.Drawing.Size(184, 27);
+            this.lblExploreTablesOrig.TabIndex = 19;
+            this.lblExploreTablesOrig.Text = "Explorador de Tabelas Origem";
+            this.lblExploreTablesOrig.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblExploreColumnsOrig
+            // 
+            this.lblExploreColumnsOrig.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblExploreColumnsOrig.BackColor = System.Drawing.Color.SteelBlue;
+            this.lblExploreColumnsOrig.ForeColor = System.Drawing.Color.White;
+            this.lblExploreColumnsOrig.Location = new System.Drawing.Point(2, 264);
+            this.lblExploreColumnsOrig.Name = "lblExploreColumnsOrig";
+            this.lblExploreColumnsOrig.Size = new System.Drawing.Size(184, 27);
+            this.lblExploreColumnsOrig.TabIndex = 23;
+            this.lblExploreColumnsOrig.Text = "Explorador de Colunas";
+            this.lblExploreColumnsOrig.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // clbDestTables
+            // 
+            this.clbDestTables.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.clbDestTables.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.clbDestTables.ForeColor = System.Drawing.SystemColors.Info;
+            this.clbDestTables.FormattingEnabled = true;
+            this.clbDestTables.Location = new System.Drawing.Point(981, 98);
+            this.clbDestTables.Name = "clbDestTables";
+            this.clbDestTables.Size = new System.Drawing.Size(193, 600);
+            this.clbDestTables.TabIndex = 21;
+            this.clbDestTables.SelectedIndexChanged += new System.EventHandler(this.clbDestTables_SelectedIndexChanged);
+            // 
+            // lblExploreTablesDest
+            // 
+            this.lblExploreTablesDest.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblExploreTablesDest.BackColor = System.Drawing.Color.SeaGreen;
+            this.lblExploreTablesDest.ForeColor = System.Drawing.Color.White;
+            this.lblExploreTablesDest.Location = new System.Drawing.Point(981, 65);
+            this.lblExploreTablesDest.Name = "lblExploreTablesDest";
+            this.lblExploreTablesDest.Size = new System.Drawing.Size(193, 30);
+            this.lblExploreTablesDest.TabIndex = 20;
+            this.lblExploreTablesDest.Text = "Explorador de Tabelas Destino";
+            this.lblExploreTablesDest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // dgvOrigColumns
+            // 
+            this.dgvOrigColumns.AllowUserToAddRows = false;
+            this.dgvOrigColumns.AllowUserToDeleteRows = false;
+            this.dgvOrigColumns.AllowUserToResizeColumns = false;
+            this.dgvOrigColumns.AllowUserToResizeRows = false;
+            this.dgvOrigColumns.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvOrigColumns.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.dgvOrigColumns.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.NullValue = "null";
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvOrigColumns.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvOrigColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOrigColumns.ColumnHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrigColumns.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvOrigColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
+            this.dgvOrigColumns.GridColor = System.Drawing.Color.Black;
+            this.dgvOrigColumns.Location = new System.Drawing.Point(2, 294);
+            this.dgvOrigColumns.MultiSelect = false;
+            this.dgvOrigColumns.Name = "dgvOrigColumns";
+            this.dgvOrigColumns.ReadOnly = true;
+            this.dgvOrigColumns.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvOrigColumns.RowHeadersVisible = false;
+            this.dgvOrigColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.NullValue = "NULL";
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvOrigColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvOrigColumns.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrigColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvOrigColumns.Size = new System.Drawing.Size(184, 404);
+            this.dgvOrigColumns.TabIndex = 24;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.panel1.Controls.Add(this.dgvSelectFields);
+            this.panel1.Location = new System.Drawing.Point(192, 65);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(783, 633);
+            this.panel1.TabIndex = 25;
+            // 
+            // dgvSelectFields
+            // 
+            this.dgvSelectFields.AllowDrop = true;
+            this.dgvSelectFields.AllowUserToAddRows = false;
+            this.dgvSelectFields.AllowUserToDeleteRows = false;
+            this.dgvSelectFields.AllowUserToResizeColumns = false;
+            this.dgvSelectFields.AllowUserToResizeRows = false;
+            this.dgvSelectFields.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSelectFields.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvSelectFields.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dgvSelectFields.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvSelectFields.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dgvSelectFields.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSelectFields.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvSelectFields.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSelectFields.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colOrigColumn,
+            this.colDefaultValue,
+            this.colAs,
+            this.colDestColumn,
+            this.colDestColumnType});
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSelectFields.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvSelectFields.Location = new System.Drawing.Point(26, 113);
+            this.dgvSelectFields.MultiSelect = false;
+            this.dgvSelectFields.Name = "dgvSelectFields";
+            this.dgvSelectFields.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvSelectFields.RowHeadersVisible = false;
+            this.dgvSelectFields.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvSelectFields.Size = new System.Drawing.Size(732, 399);
+            this.dgvSelectFields.TabIndex = 0;
+            // 
+            // colOrigColumn
+            // 
+            this.colOrigColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colOrigColumn.DataPropertyName = "colOrigColumn";
+            this.colOrigColumn.FillWeight = 61.54822F;
+            this.colOrigColumn.HeaderText = "Coluna Origem";
+            this.colOrigColumn.Name = "colOrigColumn";
+            this.colOrigColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colOrigColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colOrigColumn.ToolTipText = "Coluna da base original para converter";
+            // 
+            // colDefaultValue
+            // 
+            this.colDefaultValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colDefaultValue.DataPropertyName = "colDefaultValue";
+            this.colDefaultValue.FillWeight = 61.54822F;
+            this.colDefaultValue.HeaderText = "Valor Padrão";
+            this.colDefaultValue.Name = "colDefaultValue";
+            this.colDefaultValue.ReadOnly = true;
+            this.colDefaultValue.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colDefaultValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDefaultValue.ToolTipText = "Valor Padrão do campo no destino";
+            this.colDefaultValue.Width = 74;
+            // 
+            // colAs
+            // 
+            this.colAs.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colAs.DataPropertyName = "colAs";
+            this.colAs.FillWeight = 253.8071F;
+            this.colAs.HeaderText = "As";
+            this.colAs.Name = "colAs";
+            this.colAs.ReadOnly = true;
+            this.colAs.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colAs.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAs.ToolTipText = "Purely Visual";
+            this.colAs.Width = 25;
+            // 
+            // colDestColumn
+            // 
+            this.colDestColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colDestColumn.DataPropertyName = "colDestColumn";
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
+            this.colDestColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            this.colDestColumn.FillWeight = 61.54822F;
+            this.colDestColumn.HeaderText = "Coluna Destino";
+            this.colDestColumn.Name = "colDestColumn";
+            this.colDestColumn.ReadOnly = true;
+            this.colDestColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colDestColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDestColumn.ToolTipText = "Coluna alvo para conversão";
+            // 
+            // colDestColumnType
+            // 
+            this.colDestColumnType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colDestColumnType.DataPropertyName = "colDestColumnType";
+            this.colDestColumnType.FillWeight = 61.54822F;
+            this.colDestColumnType.HeaderText = "Formato do Campo";
+            this.colDestColumnType.Name = "colDestColumnType";
+            this.colDestColumnType.ReadOnly = true;
+            this.colDestColumnType.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colDestColumnType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDestColumnType.ToolTipText = "Formato do campo destino";
+            this.colDestColumnType.Width = 62;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.ClientSize = new System.Drawing.Size(1177, 706);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.dgvOrigColumns);
+            this.Controls.Add(this.lblExploreTablesDest);
+            this.Controls.Add(this.lblExploreColumnsOrig);
+            this.Controls.Add(this.clbDestTables);
+            this.Controls.Add(this.lblExploreTablesOrig);
+            this.Controls.Add(this.clbOrigTables);
             this.Controls.Add(this.lblConnectDestiny);
             this.Controls.Add(this.lblConnectOrigin);
             this.Controls.Add(this.txtDestPass);
@@ -347,6 +610,9 @@ namespace Project_SQLBuilder
             this.panelHeader.PerformLayout();
             this.Taskbar1.ResumeLayout(false);
             this.Taskbar1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrigColumns)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSelectFields)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -377,6 +643,19 @@ namespace Project_SQLBuilder
         private System.Windows.Forms.Label lblDestDB;
         private System.Windows.Forms.Label lblConnectOrigin;
         private System.Windows.Forms.Label lblConnectDestiny;
+        private System.Windows.Forms.CheckedListBox clbOrigTables;
+        private System.Windows.Forms.Label lblExploreTablesOrig;
+        private System.Windows.Forms.Label lblExploreColumnsOrig;
+        private System.Windows.Forms.CheckedListBox clbDestTables;
+        private System.Windows.Forms.Label lblExploreTablesDest;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dgvOrigColumns;
+        private DataGridView dgvSelectFields;
+        private DataGridViewTextBoxColumn colOrigColumn;
+        private DataGridViewTextBoxColumn colDefaultValue;
+        private DataGridViewTextBoxColumn colAs;
+        private DataGridViewTextBoxColumn colDestColumn;
+        private DataGridViewTextBoxColumn colDestColumnType;
 
     }
 }

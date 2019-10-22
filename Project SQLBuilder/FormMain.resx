@@ -140,7 +140,7 @@
   <data name="lblConnectOrigin.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACCSURBVDhP5ZJBDoAgDAR5gm/qvW/1Ydy51q6hSWmg6MmD
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAACCSURBVDhP5ZJBDoAgDAR5gm/qvW/1Ydy51q6hSWmg6MmD
         JhsoocOyUkSkmIp+rbVTJV2Yx/oYeiKg1irMfAuQWOvaHkBEAhnA13CZOkCTb4h1CnB3twym49KBP81c
         xBF7UkAGMYePM5id/irE7wDZ39heARv6kx7eg63/DeDDXGVwAWt8cCU5a/wAAAAAAElFTkSuQmCC
 </value>
@@ -148,9 +148,36 @@
   <data name="lblConnectDestiny.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAACCSURBVDhP5ZJBDoAgDAR5gm/qvW/1Ydy51q6hSWmg6MmD
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAACCSURBVDhP5ZJBDoAgDAR5gm/qvW/1Ydy51q6hSWmg6MmD
         JhsoocOyUkSkmIp+rbVTJV2Yx/oYeiKg1irMfAuQWOvaHkBEAhnA13CZOkCTb4h1CnB3twym49KBP81c
         xBF7UkAGMYePM5id/irE7wDZ39heARv6kx7eg63/DeDDXGVwAWt8cCU5a/wAAAAAAElFTkSuQmCC
 </value>
   </data>
+  <metadata name="dgvOrigColumns.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="panel1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dgvSelectFields.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colOrigColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colDefaultValue.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colAs.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colDestColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colDestColumnType.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>25</value>
+  </metadata>
 </root>
