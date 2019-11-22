@@ -1,0 +1,23 @@
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Project SQLBuilder.exe.config
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Project SQLBuilder.exe
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Project SQLBuilder.pdb
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Npgsql.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Oracle.DataAccess.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Buffers.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Memory.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Threading.Tasks.Extensions.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.ValueTuple.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Npgsql.pdb
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\Npgsql.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Buffers.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Memory.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.Threading.Tasks.Extensions.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Release\System.ValueTuple.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project_SQLBuilder.FormConfig.resources
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project_SQLBuilder.FormMain.resources
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project_SQLBuilder.Properties.Resources.resources
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project SQLBuilder.csproj.GenerateResource.Cache
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project SQLBuilder.exe
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Release\Project SQLBuilder.pdb

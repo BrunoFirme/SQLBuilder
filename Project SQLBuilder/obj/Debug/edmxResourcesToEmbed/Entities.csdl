@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SQLBuilderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="insert_table">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fk_project" Type="Int32" Nullable="false" />
+    <Property Name="table" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="order" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="project" Relationship="Self.sqlbuilder_insert_table_project_id_fk" FromRole="insert_table" ToRole="project" />
+  </EntityType>
+  <EntityType Name="project">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="dest_db_type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="insert_table" Relationship="Self.sqlbuilder_insert_table_project_id_fk" FromRole="project" ToRole="insert_table" />
+  </EntityType>
+  <Association Name="sqlbuilder_insert_table_project_id_fk">
+    <End Role="project" Type="Self.project" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="insert_table" Type="Self.insert_table" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="project">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="insert_table">
+        <PropertyRef Name="fk_project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="insert_table" EntityType="Self.insert_table" />
+    <EntitySet Name="project" EntityType="Self.project" />
+    <AssociationSet Name="sqlbuilder_insert_table_project_id_fk" Association="Self.sqlbuilder_insert_table_project_id_fk">
+      <End Role="project" EntitySet="project" />
+      <End Role="insert_table" EntitySet="insert_table" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

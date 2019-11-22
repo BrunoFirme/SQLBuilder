@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SQLBuilderModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="insert_table">
+      <EntityTypeMapping TypeName="SQLBuilderModel.insert_table">
+        <MappingFragment StoreEntitySet="insert_table">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fk_project" ColumnName="fk_project" />
+          <ScalarProperty Name="table" ColumnName="table" />
+          <ScalarProperty Name="order" ColumnName="order" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="project">
+      <EntityTypeMapping TypeName="SQLBuilderModel.project">
+        <MappingFragment StoreEntitySet="project">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="dest_db_type" ColumnName="dest_db_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
