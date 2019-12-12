@@ -22,5 +22,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="select_field">
+      <EntityTypeMapping TypeName="SQLBuilderModel.select_field">
+        <MappingFragment StoreEntitySet="select_field">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fk_insert_table" ColumnName="fk_insert_table" />
+          <ScalarProperty Name="selected_field" ColumnName="selected_field" />
+          <ScalarProperty Name="column" ColumnName="column" />
+          <ScalarProperty Name="default_value" ColumnName="default_value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

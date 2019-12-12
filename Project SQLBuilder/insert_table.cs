@@ -14,11 +14,21 @@ namespace Project_SQLBuilder
     
     public partial class insert_table
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public insert_table()
+        {
+            this.select_field = new HashSet<select_field>();
+        }
+    
         public int id { get; set; }
         public int fk_project { get; set; }
         public string table { get; set; }
         public int order { get; set; }
+        public string insert_comand { get; set; }
+        public string from_comand { get; set; }
     
         public virtual project project { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<select_field> select_field { get; set; }
     }
 }

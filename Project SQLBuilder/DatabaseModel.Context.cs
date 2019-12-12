@@ -27,5 +27,6 @@ namespace Project_SQLBuilder
     
         public virtual DbSet<insert_table> insert_table { get; set; }
         public virtual DbSet<project> project { get; set; }
+        public virtual DbSet<select_field> select_field { get; set; }
     }
 }
