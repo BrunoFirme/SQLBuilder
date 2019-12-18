@@ -22,7 +22,18 @@ namespace Project_SQLBuilder
     
         public int id { get; set; }
         public string name { get; set; }
-        public string dest_db_type { get; set; }
+        public string destiny_db_type { get; set; }
+        public string origin_host { get; set; }
+        public string origin_port { get; set; }
+        public string origin_db { get; set; }
+        public string origin_schema { get; set; }
+        public string origin_user { get; set; }
+        public string destiny_host { get; set; }
+        public string destiny_port { get; set; }
+        public string destiny_db { get; set; }
+        public string destiny_schema { get; set; }
+        public string destiny_user { get; set; }
+        public string origin_db_type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<insert_table> insert_table { get; set; }

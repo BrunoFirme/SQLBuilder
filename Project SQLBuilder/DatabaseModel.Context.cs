@@ -25,6 +25,7 @@ namespace Project_SQLBuilder
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<custom_field> custom_field { get; set; }
         public virtual DbSet<insert_table> insert_table { get; set; }
         public virtual DbSet<project> project { get; set; }
         public virtual DbSet<select_field> select_field { get; set; }

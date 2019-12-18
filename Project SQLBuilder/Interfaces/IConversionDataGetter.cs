@@ -1,15 +1,21 @@
-﻿
-
-using System.Data;
+﻿using System.Data;
+using System.Linq;
 
 namespace Project_SQLBuilder.Interfaces
 {
     public interface IConversionDataGetter
     {
+        string Type { get; set; }
+        string Host { get; set; }
+        string Port { get; set; }
+        string Database { get; set; }
+        string User { get; set; }
+        string Password { get; set; }
+        string Schema { get; set; }
         string ConnectionString { get; set; }
 
-        void SetConnectionString(string host, string port, string database, string user, string password, string schema);
+        void SetConnectionString();
         DataTable SelectTables();
-        DataTable SelectColumns(string table);
+        DataTable SelectColumns(string table, IQueryable<custom_field> customField);
     }
 }

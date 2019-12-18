@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="SQLBuilderModel.Store" Provider="Devart.Data.PostgreSql" ProviderManifestToken="PostgreSQL, 9.5.4" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="custom_field">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fk_insert_table" Type="int" Nullable="false" />
+          <Property Name="column" Type="varchar" MaxLength="65535" Nullable="false" />
+          <Property Name="default_value" Type="varchar" MaxLength="65535" />
+          <Property Name="columntype" Type="varchar" MaxLength="65535" Nullable="false" />
+        </EntityType>
         <EntityType Name="insert_table">
           <Key>
             <PropertyRef Name="id" />
@@ -22,7 +32,18 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="dest_db_type" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="destiny_db_type" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_host" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_port" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_db" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_schema" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_user" Type="varchar" MaxLength="65535" />
+          <Property Name="destiny_host" Type="varchar" MaxLength="65535" />
+          <Property Name="destiny_port" Type="varchar" MaxLength="65535" />
+          <Property Name="destiny_db" Type="varchar" MaxLength="65535" />
+          <Property Name="destiny_schema" Type="varchar" MaxLength="65535" />
+          <Property Name="destiny_user" Type="varchar" MaxLength="65535" />
+          <Property Name="origin_db_type" Type="varchar" MaxLength="65535" />
         </EntityType>
         <EntityType Name="select_field">
           <Key>
@@ -34,6 +55,20 @@
           <Property Name="column" Type="varchar" MaxLength="65535" Nullable="false" />
           <Property Name="default_value" Type="varchar" MaxLength="65535" />
         </EntityType>
+        <Association Name="sqlbuilder_custom_field_insert_table_fk">
+          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="custom_field" Type="Self.custom_field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="insert_table">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="custom_field">
+              <PropertyRef Name="fk_insert_table" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="sqlbuilder_insert_table_project_id_fk">
           <End Role="project" Type="Self.project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -49,7 +84,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="sqlbuilder_selectfield_insert_table_fk">
-          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1" />
+          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="select_field" Type="Self.select_field" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="insert_table">
@@ -61,9 +98,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SQLBuilderModelStoreContainer">
+          <EntitySet Name="custom_field" EntityType="Self.custom_field" Schema="sqlbuilder" store:Type="Tables" />
           <EntitySet Name="insert_table" EntityType="Self.insert_table" Schema="sqlbuilder" store:Type="Tables" />
           <EntitySet Name="project" EntityType="Self.project" Schema="sqlbuilder" store:Type="Tables" />
           <EntitySet Name="select_field" EntityType="Self.select_field" Schema="sqlbuilder" store:Type="Tables" />
+          <AssociationSet Name="sqlbuilder_custom_field_insert_table_fk" Association="Self.sqlbuilder_custom_field_insert_table_fk">
+            <End Role="insert_table" EntitySet="insert_table" />
+            <End Role="custom_field" EntitySet="custom_field" />
+          </AssociationSet>
           <AssociationSet Name="sqlbuilder_insert_table_project_id_fk" Association="Self.sqlbuilder_insert_table_project_id_fk">
             <End Role="project" EntitySet="project" />
             <End Role="insert_table" EntitySet="insert_table" />
@@ -78,6 +120,17 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SQLBuilderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="custom_field">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fk_insert_table" Type="Int32" Nullable="false" />
+          <Property Name="column" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="default_value" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="columntype" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="insert_table" Relationship="Self.sqlbuilder_custom_field_insert_table_fk" FromRole="custom_field" ToRole="insert_table" />
+        </EntityType>
         <EntityType Name="insert_table">
           <Key>
             <PropertyRef Name="id" />
@@ -88,6 +141,7 @@
           <Property Name="order" Type="Int32" Nullable="false" />
           <Property Name="insert_comand" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
           <Property Name="from_comand" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="custom_field" Relationship="Self.sqlbuilder_custom_field_insert_table_fk" FromRole="insert_table" ToRole="custom_field" />
           <NavigationProperty Name="project" Relationship="Self.sqlbuilder_insert_table_project_id_fk" FromRole="insert_table" ToRole="project" />
           <NavigationProperty Name="select_field" Relationship="Self.sqlbuilder_selectfield_insert_table_fk" FromRole="insert_table" ToRole="select_field" />
         </EntityType>
@@ -97,7 +151,18 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="dest_db_type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="destiny_db_type" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_host" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_port" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_db" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_schema" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_user" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="destiny_host" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="destiny_port" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="destiny_db" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="destiny_schema" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="destiny_user" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
+          <Property Name="origin_db_type" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="insert_table" Relationship="Self.sqlbuilder_insert_table_project_id_fk" FromRole="project" ToRole="insert_table" />
         </EntityType>
         <EntityType Name="select_field">
@@ -111,6 +176,20 @@
           <Property Name="default_value" Type="String" MaxLength="65535" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="insert_table" Relationship="Self.sqlbuilder_selectfield_insert_table_fk" FromRole="select_field" ToRole="insert_table" />
         </EntityType>
+        <Association Name="sqlbuilder_custom_field_insert_table_fk">
+          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="custom_field" Type="Self.custom_field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="insert_table">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="custom_field">
+              <PropertyRef Name="fk_insert_table" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="sqlbuilder_insert_table_project_id_fk">
           <End Role="project" Type="Self.project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -126,7 +205,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="sqlbuilder_selectfield_insert_table_fk">
-          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1" />
+          <End Role="insert_table" Type="Self.insert_table" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="select_field" Type="Self.select_field" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="insert_table">
@@ -138,9 +219,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="custom_field" EntityType="Self.custom_field" />
           <EntitySet Name="insert_table" EntityType="Self.insert_table" />
           <EntitySet Name="project" EntityType="Self.project" />
           <EntitySet Name="select_field" EntityType="Self.select_field" />
+          <AssociationSet Name="sqlbuilder_custom_field_insert_table_fk" Association="Self.sqlbuilder_custom_field_insert_table_fk">
+            <End Role="insert_table" EntitySet="insert_table" />
+            <End Role="custom_field" EntitySet="custom_field" />
+          </AssociationSet>
           <AssociationSet Name="sqlbuilder_insert_table_project_id_fk" Association="Self.sqlbuilder_insert_table_project_id_fk">
             <End Role="project" EntitySet="project" />
             <End Role="insert_table" EntitySet="insert_table" />
@@ -156,6 +242,17 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SQLBuilderModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="custom_field">
+            <EntityTypeMapping TypeName="SQLBuilderModel.custom_field">
+              <MappingFragment StoreEntitySet="custom_field">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fk_insert_table" ColumnName="fk_insert_table" />
+                <ScalarProperty Name="column" ColumnName="column" />
+                <ScalarProperty Name="default_value" ColumnName="default_value" />
+                <ScalarProperty Name="columntype" ColumnName="columntype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="insert_table">
             <EntityTypeMapping TypeName="SQLBuilderModel.insert_table">
               <MappingFragment StoreEntitySet="insert_table">
@@ -173,7 +270,18 @@
               <MappingFragment StoreEntitySet="project">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="dest_db_type" ColumnName="dest_db_type" />
+                <ScalarProperty Name="destiny_db_type" ColumnName="destiny_db_type" />
+                <ScalarProperty Name="origin_host" ColumnName="origin_host" />
+                <ScalarProperty Name="origin_port" ColumnName="origin_port" />
+                <ScalarProperty Name="origin_db" ColumnName="origin_db" />
+                <ScalarProperty Name="origin_schema" ColumnName="origin_schema" />
+                <ScalarProperty Name="origin_user" ColumnName="origin_user" />
+                <ScalarProperty Name="destiny_host" ColumnName="destiny_host" />
+                <ScalarProperty Name="destiny_port" ColumnName="destiny_port" />
+                <ScalarProperty Name="destiny_db" ColumnName="destiny_db" />
+                <ScalarProperty Name="destiny_schema" ColumnName="destiny_schema" />
+                <ScalarProperty Name="destiny_user" ColumnName="destiny_user" />
+                <ScalarProperty Name="origin_db_type" ColumnName="origin_db_type" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

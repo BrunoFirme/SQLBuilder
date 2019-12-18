@@ -13,6 +13,7 @@ namespace Project_SQLBuilder.Classes
 
         public static string Oracle = "Oracle";
         public static string Postgres = "Postgres";
+        public static string Dbf = "DBF";
 
         public ConversionDataFactory(string host, string port, string database, string user, string password,
             string schema)
@@ -27,25 +28,24 @@ namespace Project_SQLBuilder.Classes
 
         public IConversionDataGetter GetConversionDataGetter(string type)
         {
-
             IConversionDataGetter newCdGetter = null;
 
             if (type.Equals(Oracle))
-            {            
-
-                newCdGetter = new OracleConversionDataGetter();
-                newCdGetter.SetConnectionString(host, port, database, user, password, schema);
-
+            {
+                newCdGetter = new OracleConversionDataGetter(host, port, database, user, password, schema);
+                newCdGetter.SetConnectionString();
             }
             else if (type.Equals(Postgres))
             {
-                newCdGetter = new PostgresConversionDataGetter();
-                newCdGetter.SetConnectionString(host, port, database, user, password, schema);
+                newCdGetter = new PostgresConversionDataGetter(host, port, database, user, password, schema);
+                newCdGetter.SetConnectionString();
             }
-
+            else if (type.Equals(Dbf))
+            {
+                newCdGetter = new DbfConversionDataGetter(host, port, database, user, password, schema);
+                newCdGetter.SetConnectionString();
+            }
             return newCdGetter;
-
         }
-
     }
 }

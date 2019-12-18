@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -8,21 +9,27 @@ using Project_SQLBuilder.Interfaces;
 
 namespace Project_SQLBuilder.Forms
 {
-    public partial class FormMain : Form
+    public partial class MainForm : Form
     {
-        //parameter used to know when its a UI transition and not user-input that should be saved in DB.
+        //Parameters used to know when its an UI transition and not user-input that should be saved in DB or reacted in some way.
         private bool _isUiChange;
+
         private bool _isTableSwap;
+
+        //Used for script generation.
         private string _currentTable = "";
 
         //Connections set in the connection form.
-        private IConversionDataGetter _originConn;
-        private IConversionDataGetter _destinyConn;
+        public DataBaseConnectionForm ConfigForm;
 
-        public FormMain()
+        public IConversionDataGetter OriginConn;
+        public IConversionDataGetter DestinyConn;
+
+        public MainForm()
         {
             InitializeComponent();
             PopulateProjectsCmb();
+            lblStatusText.Text = "";
         }
 
         #region Basic form functionality.
@@ -47,7 +54,16 @@ namespace Project_SQLBuilder.Forms
         //Open connection form.
         private void conectarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new DataBaseConnectionForm(this).Show();
+            if (ConfigForm == null)
+            {
+                ConfigForm = new DataBaseConnectionForm(this);
+                ConfigForm.Show();
+            }
+            else
+            {
+                ConfigForm.Close();
+                ConfigForm = null;
+            }
         }
 
         //COLOR CHANGES TO SAVESTATE LABEL
@@ -55,46 +71,37 @@ namespace Project_SQLBuilder.Forms
         {
             if (_isTableSwap) return;
             lblSaveState.BackColor = Color.Yellow;
+            lblStatusText.Text = "";
         }
 
         private void rtbFrom_TextChanged(object sender, EventArgs e)
         {
             if (_isTableSwap) return;
             lblSaveState.BackColor = Color.Yellow;
+            lblStatusText.Text = "";
         }
 
         private void dgvSelectFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (_isTableSwap) return;
             lblSaveState.BackColor = Color.Yellow;
+            lblStatusText.Text = "";
         }
 
         #endregion
 
         #region ListViews related functions.
 
-        public void SetOriginConnection(IConversionDataGetter newConn)
-        {
-            _originConn = newConn;
-            PopulateOriginTables();
-        }
-
-        public void SetDestinyConnection(IConversionDataGetter newConn)
-        {
-            _destinyConn = newConn;
-            PopulateDestinyTables();
-        }
-
         //Populate list of origin data-base tables.
         public void PopulateOriginTables()
         {
-            dlvOrigTables.DataSource = _originConn.SelectTables();
+            dlvOrigTables.DataSource = OriginConn.SelectTables();
         }
 
         //Populate list of destiny data-base tables
         public void PopulateDestinyTables()
         {
-            dlvDestTables.DataSource = _destinyConn.SelectTables();
+            dlvDestTables.DataSource = DestinyConn.SelectTables();
 
             _isUiChange = true;
             CheckInsertTables();
@@ -106,7 +113,8 @@ namespace Project_SQLBuilder.Forms
         {
             if (dlvOrigTables.SelectedItem == null) return;
 
-            dlvOrigColumns.DataSource = _originConn.SelectColumns(dlvOrigTables.SelectedItem.Text);
+            if (OriginConn == null) return;
+            dlvOrigColumns.DataSource = OriginConn.SelectColumns(dlvOrigTables.SelectedItem.Text, null);
         }
 
         //Populate select datagridview of destiny data-base columns.
@@ -129,33 +137,66 @@ namespace Project_SQLBuilder.Forms
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
 
-            if (_destinyConn == null)
+            if (DestinyConn == null)
             {
-                Interaction.MsgBox("Não há conexão com o banco de dados destino. Por favor conecte-se para recuperar as informações do banco.");
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text =
+                    @"Não há conexão com o banco de dados destino. Por favor conecte-se para recuperar as informações do banco.";
                 return;
             }
 
             if (tscbProjects.SelectedIndex == -1) return;
             rtbFrom.Text = null;
             rtbInsert.Text = null;
-           
+
             lblInsert.Text = @"INSERT INTO " + _currentTable;
 
-            dgvSelectFields.DataSource = _destinyConn.SelectColumns(_currentTable);
-
             var context = new Entities();
+
+            olvCustomField.ClearObjects();
+            dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, context.custom_field.Where(x => x.insert_table.table == _currentTable && x.insert_table.fk_project == pId));
 
             if (context.select_field.Any(x =>
                 x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
             {
                 LoadCommands();
+                PopulateCustomFields();
                 lblSaveState.BackColor = Color.Green;
+                lblStatusText.Text = "";
             }
             else
             {
                 lblSaveState.BackColor = Color.Yellow;
+                lblStatusText.Text = "";
             }
 
+            var lastAddedColumn = dgvSelectFields[3, dgvSelectFields.RowCount - 1].Value.ToString();
+
+            if (!context.select_field.Any(x =>
+                x.column == lastAddedColumn && x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
+            {
+                lblSaveState.BackColor = Color.Yellow;
+            }
+        }
+
+        //Clears lists and connections to set up a fresh screen.
+        private void ClearAll()
+        {
+            DestinyConn = null;
+            OriginConn = null;
+            dgvSelectFields.DataSource = null;
+            dlvOrigTables.DataSource = null;
+            dlvOrigColumns.DataSource = null;
+            dlvDestTables.DataSource = null;
+            dlvDestTables.ClearObjects();
+            olvInsertTable.ClearObjects();
+            olvCustomField.ClearObjects();
+            rtbFrom.Text = null;
+            rtbInsert.Text = null;
+            lblInsert.Text = @"INSERT INTO";
+            _currentTable = "";
+            lblStatusText.Text = @"";
+            lblSaveState.BackColor = Color.Green;
         }
 
         //Check project tables in destiny data-base tables list.
@@ -183,7 +224,7 @@ namespace Project_SQLBuilder.Forms
                 }
             }
         }
-        
+
         #endregion
 
         #region Project object related functions.
@@ -200,8 +241,8 @@ namespace Project_SQLBuilder.Forms
                 tscbProjects.Items.Add(p.name);
             }
         }
-               
-        private int GetCurrentProjectId()
+
+        public int GetCurrentProjectId()
         {
             var context = new Entities();
 
@@ -217,12 +258,10 @@ namespace Project_SQLBuilder.Forms
             return qfkProject;
         }
 
-        //Create new Project.
+        //Create new project.
         private void novoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var name = Interaction.InputBox("Nome do Projeto: ", "Novo Projeto", "*", 100, 100);
-            var destDbType =
-                Interaction.InputBox("Banco de dados: ", "Novo Projeto", "*", 100, 100);
 
             if (string.IsNullOrEmpty(name))
             {
@@ -230,16 +269,9 @@ namespace Project_SQLBuilder.Forms
                 return;
             }
 
-            if (string.IsNullOrEmpty(destDbType))
-            {
-                MessageBox.Show(@"Banco Inválido");
-                return;
-            }
-
             var newProject = new project
             {
-                name = name,
-                dest_db_type = destDbType
+                name = name
             };
 
             var context = new Entities();
@@ -248,12 +280,40 @@ namespace Project_SQLBuilder.Forms
 
             context.SaveChanges();
 
-            dgvSelectFields.DataSource = null;
-            rtbFrom.Text = null;
-            rtbInsert.Text = null;
-            _currentTable = "";
+            ClearAll();
 
             PopulateProjectsCmb();
+        }
+
+        //Delete existing selected project.
+        private void excluirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            if (tscbProjects.SelectedIndex == -1)
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Nenhum projeto selecionado.";
+                return;
+            }
+
+            var context = new Entities();
+
+            var deleteProject = context.project.SingleOrDefault(x => x.id == pId);
+
+            if (deleteProject == null) return;
+
+            if (MessageBox.Show(@"Deseja mesmo excluir o projeto " + deleteProject.name + @"?", @"Alerta!",
+                    MessageBoxButtons.YesNo) == DialogResult.No) return;
+
+            context.project.Remove(deleteProject);
+            context.SaveChanges();
+
+            PopulateProjectsCmb();
+
+            tscbProjects.SelectedIndex = -1;
+
         }
 
         //Check destiny table checkboxes and load Insert_tables list.
@@ -261,14 +321,9 @@ namespace Project_SQLBuilder.Forms
         {
             _isUiChange = true;
 
+            ClearAll();
             CheckInsertTables();
-
             PopulateInsertTablesList();
-
-            dgvSelectFields.DataSource = null;
-            rtbFrom.Text = null;
-            rtbInsert.Text = null;
-            _currentTable = "";
 
             _isUiChange = false;
         }
@@ -295,7 +350,7 @@ namespace Project_SQLBuilder.Forms
         private void dlvDestTables_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             //LINQ does not take C# methods as values.
-            var pId = GetCurrentProjectId();   
+            var pId = GetCurrentProjectId();
 
             if (_isUiChange || tscbProjects.SelectedIndex == -1) return;
 
@@ -370,7 +425,7 @@ namespace Project_SQLBuilder.Forms
         }
 
         private void DeleteUncheckedTableFromProject(string tableName)
-        {            
+        {
             //LINQ does not take C# methods as values. 
             var pId = GetCurrentProjectId();
 
@@ -427,7 +482,7 @@ namespace Project_SQLBuilder.Forms
         private void olvInsertTable_Dropped(object sender, BrightIdeasSoftware.OlvDropEventArgs e)
         {
             //LINQ does not take C# methods as values.
-            var pId = GetCurrentProjectId();   
+            var pId = GetCurrentProjectId();
 
             var context = new Entities();
             var dragtablename = olvInsertTable.SelectedItem.Text;
@@ -451,7 +506,140 @@ namespace Project_SQLBuilder.Forms
 
         #endregion
 
-        #region Command Persistence related functions
+        #region Custom Field related functions.
+
+        private void lblddCustomField_Click(object sender, EventArgs e)
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+            var context = new Entities();
+
+            if (_currentTable == "")
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Sem tabela para adicionar campo customizado";
+                return;
+            }
+
+            if (!context.insert_table
+                    .Any(x => x.table == _currentTable && x.fk_project == pId))
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Marque a tabela antes de adicionar um campo customizado.";
+                return;
+            }
+
+            if (!context.select_field
+                .Any(x => x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Salve a tabela antes de adicionar um campo customizado.";
+                return;
+            }
+
+            // ReSharper disable once PossibleNullReferenceException
+            var idInsertTable = context.insert_table
+                .SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId).id;
+
+            var columnName = Interaction.InputBox("Nome da Coluna: ", "Coluna Customizada", "*", 100, 100);
+            if (string.IsNullOrEmpty(columnName) || context.custom_field.Any(x => x.column == columnName && x.fk_insert_table == idInsertTable))
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Coluna Inválida ou já existente.";
+                return;
+            }
+            var columnType = Interaction.InputBox("Tipo da Coluna: ", "Coluna Customizada", "*", 100, 100);
+            if (string.IsNullOrEmpty(columnType))
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Coluna Inválida";
+                return;
+            }
+            var defaultValue = Interaction.InputBox("Valor Padrão: ", "Coluna Customizada", "*", 100, 100);
+
+            var column = new custom_field
+            {
+                column = columnName,
+                columntype = columnType,
+                default_value = defaultValue,
+                fk_insert_table = idInsertTable
+            };
+
+            context.custom_field.Add(column);
+            context.SaveChanges();
+
+            lblSaveState.BackColor = Color.Yellow;
+
+            PopulateCustomFields();
+        }
+
+        private void PopulateCustomFields()
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            var context = new Entities();
+            var customfields = context.custom_field.Where(x =>
+                x.insert_table.table == _currentTable && x.insert_table.fk_project == pId);
+
+            olvCustomField.SetObjects(customfields);
+
+            UpdateSelectFieldWithNewCol(customfields);
+        }
+
+        private void UpdateSelectFieldWithNewCol(IQueryable<custom_field> customField)
+        {
+            dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, customField);
+        }
+
+        private void lblRemoveCustomField_Click(object sender, EventArgs e)
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            if (olvCustomField.SelectedIndex == -1) return;
+
+            var context = new Entities();
+            var deleteCustomField = context.custom_field.SingleOrDefault(x =>
+                x.column == olvCustomField.SelectedItem.Text && x.insert_table.table == _currentTable &&
+                x.insert_table.fk_project == pId);
+
+            var cfSelectLine = context.select_field.SingleOrDefault(x =>
+                x.column == deleteCustomField.column && x.insert_table.table == deleteCustomField.insert_table.table &&
+                x.insert_table.fk_project == pId);
+
+            if (MessageBox.Show(@"Deseja mesmo excluir este campo customizado?", @"Alerta!",
+                    MessageBoxButtons.YesNo) == DialogResult.No) return;
+            if (deleteCustomField != null)
+                context.custom_field.Remove(deleteCustomField);
+            if (cfSelectLine != null)
+                context.select_field.Remove(cfSelectLine);
+
+            context.SaveChanges();
+
+            olvCustomField.ClearObjects();
+            PopulateCustomFields();
+        }
+
+        #endregion
+
+        #region Connection related functions.
+
+        public void SetOriginConnection(IConversionDataGetter newConn)
+        {
+            OriginConn = newConn;
+            PopulateOriginTables();
+        }
+
+        public void SetDestinyConnection(IConversionDataGetter newConn)
+        {
+            DestinyConn = newConn;
+            PopulateDestinyTables();
+        }
+
+        #endregion
+
+        #region Persistence related functions
 
         private void salvarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -462,23 +650,23 @@ namespace Project_SQLBuilder.Forms
             var insertTable =
                 context.insert_table.SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId);
 
-            if (insertTable == null)
-            {
-                Interaction.MsgBox(
-                    "Erro: Tabela não foi incluida para conversão, inclua antes de salvar suas colunas.");
-                return;
-            }
             if (tscbProjects.SelectedIndex == -1)
             {
-                Interaction.MsgBox("Erro: Não há nada para salvar.");
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Erro: Não há nada para salvar.";
                 return;
             }
+
+            SaveConnectionParameters();
+            lblStatusText.Text = @"Parametros de conexão salvos. Para salvar as colunas desta tabela, marque-a.";
+
+            if (insertTable == null) return;
 
             SaveInsertCommand();
             SaveFromCommand();
             SaveSelectCommands();
-
             lblSaveState.BackColor = Color.Green;
+            lblStatusText.Text = @"Tabela e parametros de conexão salvos.";
         }
 
         private void SaveInsertCommand()
@@ -517,7 +705,7 @@ namespace Project_SQLBuilder.Forms
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
-            
+
             var context = new Entities();
             // ReSharper disable once PossibleNullReferenceException
             // Get the insert table fk, cant actually be null because it has to have its checkbox checked (aka in the data-base) in order to get to this.
@@ -553,6 +741,39 @@ namespace Project_SQLBuilder.Forms
             }
         }
 
+        private void SaveConnectionParameters()
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            var context = new Entities();
+
+            var updateProject = context.project.SingleOrDefault(x => x.id == pId);
+
+            if (updateProject == null) return;
+
+            if (DestinyConn != null)
+            {
+                updateProject.destiny_db_type = DestinyConn.Type;
+                updateProject.destiny_host = DestinyConn.Host;
+                updateProject.destiny_port = DestinyConn.Port;
+                updateProject.destiny_db = DestinyConn.Database;
+                updateProject.destiny_schema = DestinyConn.Schema;
+                updateProject.destiny_user = DestinyConn.User;
+            }
+            if (OriginConn != null)
+            {
+                updateProject.origin_db_type = OriginConn.Type;
+                updateProject.origin_host = OriginConn.Host;
+                updateProject.origin_port = OriginConn.Port;
+                updateProject.origin_db = OriginConn.Database;
+                updateProject.origin_schema = OriginConn.Schema;
+                updateProject.origin_user = OriginConn.User;
+            }
+
+            if (OriginConn != null || DestinyConn != null) context.SaveChanges();
+        }
+
         private void LoadCommands()
         {
             //LINQ does not take C# methods as values.
@@ -580,12 +801,14 @@ namespace Project_SQLBuilder.Forms
 
                 if (insertTable == null)
                 {
-                    Interaction.MsgBox(
-                        "Houve um erro no carregamento da conversão. Por favor, verifique a seleção do projeto/tabela.");
+                    lblSaveState.BackColor = Color.Red;
+                    lblStatusText.Text =
+                        @"Houve um erro no carregamento da conversão. Por favor, verifique a seleção do projeto/tabela.";
                     _isTableSwap = false;
                     return;
                 }
 
+                //Load commands.
                 rtbInsert.Text = insertTable.insert_comand;
                 rtbFrom.Text = insertTable.from_comand;
 
@@ -605,10 +828,14 @@ namespace Project_SQLBuilder.Forms
         {
             var script = GenerateScript(_currentTable);
             if (script != null) new ScriptVisualizationForm(script).Show();
-            else Interaction.MsgBox("Não há tabela para gerar. Você marcou a tabela em questão?");
+            else
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Não há tabela para gerar. Você marcou a tabela em questão?";
+            }
         }
 
-        //Generate All Project Scripts
+        //Generate All project Scripts
         private void todosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //LINQ does not take C# methods as values.
@@ -621,7 +848,8 @@ namespace Project_SQLBuilder.Forms
 
             if (scriptProject == null || scriptProject.insert_table.Count == 0)
             {
-                Interaction.MsgBox("Projeto não selecionado ou sem tabelas.");
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
                 return;
             }
 
@@ -641,12 +869,64 @@ namespace Project_SQLBuilder.Forms
                         .SingleOrDefault(x => x.order == index + 1).table));
                 else
                     // ReSharper disable once PossibleNullReferenceException
-                    allScripts.Append(("\n").PadRight(60, '-') +
+                    allScripts.Append(("\n").PadRight(60, '-') + "\n" +
                                       GenerateScript(scriptProject.insert_table
                                           .SingleOrDefault(x => x.order == index + 1).table));
             }
 
             new ScriptVisualizationForm(allScripts.ToString()).Show();
+        }
+
+        //Generate All project Scripts and save to txt.
+        private void todosParaTxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            var context = new Entities();
+            var scriptProject = context.project.SingleOrDefault(x => x.id == pId);
+
+            if (scriptProject == null || scriptProject.insert_table.Count == 0)
+            {
+                lblSaveState.BackColor = Color.Red;
+                lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
+                return;
+            }
+
+            var path = "C:\\SQLBuilder\\" + scriptProject.name + "\\";
+
+            Directory.CreateDirectory(path);
+            if (Directory.EnumerateFiles(path).Count() != 0)
+            {
+                Directory.CreateDirectory(path + "\\old");
+                if (Directory.EnumerateFiles(path + "\\old").Count() != 0)
+                {
+                    lblSaveState.BackColor = Color.Red;
+                    lblStatusText.Text = @"Já existem arquivos na pasta " + path +
+                                         @"e seus backups, por favor limpe a pasta de scripts para gerar novos!";
+                    return;
+                }
+
+                var files = Directory.EnumerateFiles(path, "*.sql")
+                    .Select(filepath => new FileInfo(filepath));
+                foreach (var file in files)
+                    file.MoveTo(Path.Combine(path + "\\old", file.Name));
+            }
+
+            for (var index = 0; index < scriptProject.insert_table.Count; index++)
+            {
+                var order = index + 1;
+                // ReSharper disable once PossibleNullReferenceException
+                var filename = order + ". " +
+                               scriptProject.insert_table.SingleOrDefault(x => x.order == index + 1).table + ".sql";
+                var newScript =
+                    // ReSharper disable once PossibleNullReferenceException
+                    GenerateScript(scriptProject.insert_table.SingleOrDefault(x => x.order == order).table);
+
+                File.WriteAllText(path + filename, newScript);
+            }
+
+            lblStatusText.Text = @"Scripts salvos em '" + path + @"'.";
         }
 
         //Actual Script Generation process.
@@ -664,7 +944,20 @@ namespace Project_SQLBuilder.Forms
                 return null;
             }
 
-            var script = new StringBuilder(scriptTable.insert_comand);
+            var script = new StringBuilder();
+
+            foreach (custom_field customField in scriptTable.custom_field)
+            {
+                script.Append("ALTER TABLE " + tableToGenerate + " ADD " + customField.column + " " + customField.columntype);
+                if (string.IsNullOrEmpty(customField.default_value))
+                {
+                    script.Append(";");
+                    continue;
+                }
+                script.Append(" default '" + customField.default_value + "';\n\n");
+            }
+
+            script.Append(scriptTable.insert_comand);
             script.Append("\n\n" + "INSERT INTO " + scriptTable.table + " (");
 
             //Insert value columns.
@@ -739,6 +1032,5 @@ namespace Project_SQLBuilder.Forms
         }
 
         #endregion
-        
     }
 }

@@ -17,6 +17,7 @@ namespace Project_SQLBuilder
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public insert_table()
         {
+            this.custom_field = new HashSet<custom_field>();
             this.select_field = new HashSet<select_field>();
         }
     
@@ -27,6 +28,8 @@ namespace Project_SQLBuilder
         public string insert_comand { get; set; }
         public string from_comand { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<custom_field> custom_field { get; set; }
         public virtual project project { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<select_field> select_field { get; set; }

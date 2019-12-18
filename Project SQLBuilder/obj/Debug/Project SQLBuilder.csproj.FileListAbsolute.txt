@@ -22,7 +22,8 @@ C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBui
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project SQLBuilder.csproj.GenerateResource.Cache
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project SQLBuilder.exe
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project SQLBuilder.pdb
-C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project SQLBuilder.csprojResolveAssemblyReference.cache
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project_SQLBuilder.ScriptVisualizationForm.resources
-C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project_SQLBuilder.Forms.FormMain.resources
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project_SQLBuilder.Forms.DataBaseConnectionForm.resources
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Debug\NDbfReader.dll
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Debug\NDbfReader.xml
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project_SQLBuilder.Forms.MainForm.resources

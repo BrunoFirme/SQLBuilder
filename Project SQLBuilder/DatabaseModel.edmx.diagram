@@ -4,10 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f2e2b049fe694821b548299c72187938" Name="Diagram1">
-        <EntityTypeShape EntityType="SQLBuilderModel.insert_table" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SQLBuilderModel.project" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SQLBuilderModel.select_field" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+      <Diagram DiagramId="d08d2acb32f947fba114e655dd5aeffe" Name="Diagram1">
+        <EntityTypeShape EntityType="SQLBuilderModel.custom_field" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SQLBuilderModel.insert_table" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SQLBuilderModel.project" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SQLBuilderModel.select_field" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="SQLBuilderModel.sqlbuilder_custom_field_insert_table_fk" ManuallyRouted="false" />
         <AssociationConnector Association="SQLBuilderModel.sqlbuilder_insert_table_project_id_fk" ManuallyRouted="false" />
         <AssociationConnector Association="SQLBuilderModel.sqlbuilder_selectfield_insert_table_fk" ManuallyRouted="false" />
       </Diagram>

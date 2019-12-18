@@ -127,7 +127,8 @@
             this.btnMinimize.Location = new System.Drawing.Point(210, 3);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(29, 23);
-            this.btnMinimize.TabIndex = 1;
+            this.btnMinimize.TabIndex = 17;
+            this.btnMinimize.TabStop = false;
             this.btnMinimize.UseVisualStyleBackColor = true;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             this.btnMinimize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseMove);
@@ -145,7 +146,7 @@
             this.btnClose.Location = new System.Drawing.Point(245, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(29, 23);
-            this.btnClose.TabIndex = 0;
+            this.btnClose.TabIndex = 18;
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -153,25 +154,25 @@
             // 
             this.txbOrigSchema.BackColor = System.Drawing.Color.Gray;
             this.txbOrigSchema.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigSchema.Location = new System.Drawing.Point(187, 88);
+            this.txbOrigSchema.Location = new System.Drawing.Point(187, 90);
             this.txbOrigSchema.Name = "txbOrigSchema";
             this.txbOrigSchema.Size = new System.Drawing.Size(85, 20);
-            this.txbOrigSchema.TabIndex = 95;
+            this.txbOrigSchema.TabIndex = 5;
             // 
             // txbOrigPass
             // 
             this.txbOrigPass.BackColor = System.Drawing.Color.Gray;
             this.txbOrigPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigPass.Location = new System.Drawing.Point(187, 111);
+            this.txbOrigPass.Location = new System.Drawing.Point(187, 113);
             this.txbOrigPass.Name = "txbOrigPass";
             this.txbOrigPass.Size = new System.Drawing.Size(60, 20);
-            this.txbOrigPass.TabIndex = 73;
+            this.txbOrigPass.TabIndex = 7;
             // 
             // lblOrigSchema
             // 
             this.lblOrigSchema.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigSchema.ForeColor = System.Drawing.Color.White;
-            this.lblOrigSchema.Location = new System.Drawing.Point(140, 88);
+            this.lblOrigSchema.Location = new System.Drawing.Point(140, 90);
             this.lblOrigSchema.Name = "lblOrigSchema";
             this.lblOrigSchema.Size = new System.Drawing.Size(51, 20);
             this.lblOrigSchema.TabIndex = 97;
@@ -182,25 +183,25 @@
             // 
             this.txbOrigHost.BackColor = System.Drawing.Color.Gray;
             this.txbOrigHost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigHost.Location = new System.Drawing.Point(44, 65);
+            this.txbOrigHost.Location = new System.Drawing.Point(44, 67);
             this.txbOrigHost.Name = "txbOrigHost";
             this.txbOrigHost.Size = new System.Drawing.Size(85, 20);
-            this.txbOrigHost.TabIndex = 71;
+            this.txbOrigHost.TabIndex = 2;
             // 
             // txbOrigPort
             // 
             this.txbOrigPort.BackColor = System.Drawing.Color.Gray;
             this.txbOrigPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigPort.Location = new System.Drawing.Point(187, 65);
+            this.txbOrigPort.Location = new System.Drawing.Point(187, 67);
             this.txbOrigPort.Name = "txbOrigPort";
             this.txbOrigPort.Size = new System.Drawing.Size(60, 20);
-            this.txbOrigPort.TabIndex = 92;
+            this.txbOrigPort.TabIndex = 3;
             // 
             // lblOrigPort
             // 
             this.lblOrigPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigPort.ForeColor = System.Drawing.Color.White;
-            this.lblOrigPort.Location = new System.Drawing.Point(158, 65);
+            this.lblOrigPort.Location = new System.Drawing.Point(158, 67);
             this.lblOrigPort.Name = "lblOrigPort";
             this.lblOrigPort.Size = new System.Drawing.Size(36, 20);
             this.lblOrigPort.TabIndex = 91;
@@ -211,25 +212,25 @@
             // 
             this.txbOrigDatabase.BackColor = System.Drawing.Color.Gray;
             this.txbOrigDatabase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigDatabase.Location = new System.Drawing.Point(44, 88);
+            this.txbOrigDatabase.Location = new System.Drawing.Point(44, 90);
             this.txbOrigDatabase.Name = "txbOrigDatabase";
             this.txbOrigDatabase.Size = new System.Drawing.Size(85, 20);
-            this.txbOrigDatabase.TabIndex = 69;
+            this.txbOrigDatabase.TabIndex = 4;
             // 
             // txbOrigUser
             // 
             this.txbOrigUser.BackColor = System.Drawing.Color.Gray;
             this.txbOrigUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbOrigUser.Location = new System.Drawing.Point(44, 111);
+            this.txbOrigUser.Location = new System.Drawing.Point(44, 113);
             this.txbOrigUser.Name = "txbOrigUser";
             this.txbOrigUser.Size = new System.Drawing.Size(85, 20);
-            this.txbOrigUser.TabIndex = 86;
+            this.txbOrigUser.TabIndex = 6;
             // 
             // lblOrigUser
             // 
             this.lblOrigUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigUser.ForeColor = System.Drawing.Color.White;
-            this.lblOrigUser.Location = new System.Drawing.Point(0, 111);
+            this.lblOrigUser.Location = new System.Drawing.Point(0, 113);
             this.lblOrigUser.Name = "lblOrigUser";
             this.lblOrigUser.Size = new System.Drawing.Size(48, 20);
             this.lblOrigUser.TabIndex = 85;
@@ -257,7 +258,7 @@
             this.cmbDestDbType.Location = new System.Drawing.Point(93, 149);
             this.cmbDestDbType.Name = "cmbDestDbType";
             this.cmbDestDbType.Size = new System.Drawing.Size(130, 21);
-            this.cmbDestDbType.TabIndex = 83;
+            this.cmbDestDbType.TabIndex = 9;
             this.cmbDestDbType.SelectedIndexChanged += new System.EventHandler(this.cmbDestDbType_SelectedIndexChanged);
             // 
             // cmbOrigDbType
@@ -268,11 +269,12 @@
             this.cmbOrigDbType.FormattingEnabled = true;
             this.cmbOrigDbType.Items.AddRange(new object[] {
             "Oracle",
-            "Postgres"});
+            "Postgres",
+            "DBF"});
             this.cmbOrigDbType.Location = new System.Drawing.Point(93, 33);
             this.cmbOrigDbType.Name = "cmbOrigDbType";
             this.cmbOrigDbType.Size = new System.Drawing.Size(130, 21);
-            this.cmbOrigDbType.TabIndex = 82;
+            this.cmbOrigDbType.TabIndex = 1;
             this.cmbOrigDbType.SelectedIndexChanged += new System.EventHandler(this.cmbOrigDbType_SelectedIndexChanged);
             // 
             // lblConnectDestiny
@@ -283,7 +285,7 @@
             this.lblConnectDestiny.Location = new System.Drawing.Point(229, 149);
             this.lblConnectDestiny.Name = "lblConnectDestiny";
             this.lblConnectDestiny.Size = new System.Drawing.Size(41, 20);
-            this.lblConnectDestiny.TabIndex = 81;
+            this.lblConnectDestiny.TabIndex = 16;
             this.lblConnectDestiny.Click += new System.EventHandler(this.lblConnectDestiny_Click);
             // 
             // lblConnectOrigin
@@ -294,14 +296,14 @@
             this.lblConnectOrigin.Location = new System.Drawing.Point(229, 33);
             this.lblConnectOrigin.Name = "lblConnectOrigin";
             this.lblConnectOrigin.Size = new System.Drawing.Size(41, 20);
-            this.lblConnectOrigin.TabIndex = 80;
+            this.lblConnectOrigin.TabIndex = 8;
             this.lblConnectOrigin.Click += new System.EventHandler(this.lblConnectOrigin_Click);
             // 
             // lblOrigPass
             // 
             this.lblOrigPass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigPass.ForeColor = System.Drawing.Color.White;
-            this.lblOrigPass.Location = new System.Drawing.Point(156, 111);
+            this.lblOrigPass.Location = new System.Drawing.Point(156, 113);
             this.lblOrigPass.Name = "lblOrigPass";
             this.lblOrigPass.Size = new System.Drawing.Size(36, 20);
             this.lblOrigPass.TabIndex = 72;
@@ -312,7 +314,7 @@
             // 
             this.lblOrigDatabase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigDatabase.ForeColor = System.Drawing.Color.White;
-            this.lblOrigDatabase.Location = new System.Drawing.Point(3, 88);
+            this.lblOrigDatabase.Location = new System.Drawing.Point(3, 90);
             this.lblOrigDatabase.Name = "lblOrigDatabase";
             this.lblOrigDatabase.Size = new System.Drawing.Size(48, 20);
             this.lblOrigDatabase.TabIndex = 68;
@@ -323,7 +325,7 @@
             // 
             this.lblOrigHost.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblOrigHost.ForeColor = System.Drawing.Color.White;
-            this.lblOrigHost.Location = new System.Drawing.Point(10, 65);
+            this.lblOrigHost.Location = new System.Drawing.Point(10, 67);
             this.lblOrigHost.Name = "lblOrigHost";
             this.lblOrigHost.Size = new System.Drawing.Size(42, 21);
             this.lblOrigHost.TabIndex = 70;
@@ -345,25 +347,25 @@
             // 
             this.txbDestSchema.BackColor = System.Drawing.Color.Gray;
             this.txbDestSchema.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestSchema.Location = new System.Drawing.Point(187, 204);
+            this.txbDestSchema.Location = new System.Drawing.Point(187, 206);
             this.txbDestSchema.Name = "txbDestSchema";
             this.txbDestSchema.Size = new System.Drawing.Size(85, 20);
-            this.txbDestSchema.TabIndex = 109;
+            this.txbDestSchema.TabIndex = 13;
             // 
             // txbDestPass
             // 
             this.txbDestPass.BackColor = System.Drawing.Color.Gray;
             this.txbDestPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestPass.Location = new System.Drawing.Point(187, 227);
+            this.txbDestPass.Location = new System.Drawing.Point(187, 229);
             this.txbDestPass.Name = "txbDestPass";
             this.txbDestPass.Size = new System.Drawing.Size(60, 20);
-            this.txbDestPass.TabIndex = 103;
+            this.txbDestPass.TabIndex = 15;
             // 
             // lblDestSchema
             // 
             this.lblDestSchema.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestSchema.ForeColor = System.Drawing.Color.White;
-            this.lblDestSchema.Location = new System.Drawing.Point(140, 204);
+            this.lblDestSchema.Location = new System.Drawing.Point(140, 206);
             this.lblDestSchema.Name = "lblDestSchema";
             this.lblDestSchema.Size = new System.Drawing.Size(51, 20);
             this.lblDestSchema.TabIndex = 110;
@@ -374,25 +376,25 @@
             // 
             this.txbDestHost.BackColor = System.Drawing.Color.Gray;
             this.txbDestHost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestHost.Location = new System.Drawing.Point(44, 181);
+            this.txbDestHost.Location = new System.Drawing.Point(44, 183);
             this.txbDestHost.Name = "txbDestHost";
             this.txbDestHost.Size = new System.Drawing.Size(85, 20);
-            this.txbDestHost.TabIndex = 101;
+            this.txbDestHost.TabIndex = 10;
             // 
             // txbDestPort
             // 
             this.txbDestPort.BackColor = System.Drawing.Color.Gray;
             this.txbDestPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestPort.Location = new System.Drawing.Point(187, 181);
+            this.txbDestPort.Location = new System.Drawing.Point(187, 183);
             this.txbDestPort.Name = "txbDestPort";
             this.txbDestPort.Size = new System.Drawing.Size(60, 20);
-            this.txbDestPort.TabIndex = 108;
+            this.txbDestPort.TabIndex = 11;
             // 
             // lblDestPort
             // 
             this.lblDestPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestPort.ForeColor = System.Drawing.Color.White;
-            this.lblDestPort.Location = new System.Drawing.Point(158, 181);
+            this.lblDestPort.Location = new System.Drawing.Point(158, 183);
             this.lblDestPort.Name = "lblDestPort";
             this.lblDestPort.Size = new System.Drawing.Size(36, 20);
             this.lblDestPort.TabIndex = 107;
@@ -403,25 +405,25 @@
             // 
             this.txbDestDatabase.BackColor = System.Drawing.Color.Gray;
             this.txbDestDatabase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestDatabase.Location = new System.Drawing.Point(44, 204);
+            this.txbDestDatabase.Location = new System.Drawing.Point(44, 206);
             this.txbDestDatabase.Name = "txbDestDatabase";
             this.txbDestDatabase.Size = new System.Drawing.Size(85, 20);
-            this.txbDestDatabase.TabIndex = 99;
+            this.txbDestDatabase.TabIndex = 12;
             // 
             // txbDestUser
             // 
             this.txbDestUser.BackColor = System.Drawing.Color.Gray;
             this.txbDestUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txbDestUser.Location = new System.Drawing.Point(44, 227);
+            this.txbDestUser.Location = new System.Drawing.Point(44, 229);
             this.txbDestUser.Name = "txbDestUser";
             this.txbDestUser.Size = new System.Drawing.Size(85, 20);
-            this.txbDestUser.TabIndex = 106;
+            this.txbDestUser.TabIndex = 14;
             // 
             // lblDestUser
             // 
             this.lblDestUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestUser.ForeColor = System.Drawing.Color.White;
-            this.lblDestUser.Location = new System.Drawing.Point(0, 227);
+            this.lblDestUser.Location = new System.Drawing.Point(0, 229);
             this.lblDestUser.Name = "lblDestUser";
             this.lblDestUser.Size = new System.Drawing.Size(48, 20);
             this.lblDestUser.TabIndex = 105;
@@ -441,7 +443,7 @@
             // 
             this.lblDestPass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestPass.ForeColor = System.Drawing.Color.White;
-            this.lblDestPass.Location = new System.Drawing.Point(156, 227);
+            this.lblDestPass.Location = new System.Drawing.Point(156, 229);
             this.lblDestPass.Name = "lblDestPass";
             this.lblDestPass.Size = new System.Drawing.Size(36, 20);
             this.lblDestPass.TabIndex = 102;
@@ -452,7 +454,7 @@
             // 
             this.lblDestDatabase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestDatabase.ForeColor = System.Drawing.Color.White;
-            this.lblDestDatabase.Location = new System.Drawing.Point(3, 204);
+            this.lblDestDatabase.Location = new System.Drawing.Point(3, 206);
             this.lblDestDatabase.Name = "lblDestDatabase";
             this.lblDestDatabase.Size = new System.Drawing.Size(48, 20);
             this.lblDestDatabase.TabIndex = 98;
@@ -463,7 +465,7 @@
             // 
             this.lblDestHost.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.lblDestHost.ForeColor = System.Drawing.Color.White;
-            this.lblDestHost.Location = new System.Drawing.Point(10, 181);
+            this.lblDestHost.Location = new System.Drawing.Point(10, 183);
             this.lblDestHost.Name = "lblDestHost";
             this.lblDestHost.Size = new System.Drawing.Size(42, 21);
             this.lblDestHost.TabIndex = 100;

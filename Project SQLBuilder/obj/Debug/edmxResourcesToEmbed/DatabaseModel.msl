@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="SQLBuilderModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="custom_field">
+      <EntityTypeMapping TypeName="SQLBuilderModel.custom_field">
+        <MappingFragment StoreEntitySet="custom_field">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fk_insert_table" ColumnName="fk_insert_table" />
+          <ScalarProperty Name="column" ColumnName="column" />
+          <ScalarProperty Name="default_value" ColumnName="default_value" />
+          <ScalarProperty Name="columntype" ColumnName="columntype" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="insert_table">
       <EntityTypeMapping TypeName="SQLBuilderModel.insert_table">
         <MappingFragment StoreEntitySet="insert_table">
@@ -18,7 +29,18 @@
         <MappingFragment StoreEntitySet="project">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="dest_db_type" ColumnName="dest_db_type" />
+          <ScalarProperty Name="destiny_db_type" ColumnName="destiny_db_type" />
+          <ScalarProperty Name="origin_host" ColumnName="origin_host" />
+          <ScalarProperty Name="origin_port" ColumnName="origin_port" />
+          <ScalarProperty Name="origin_db" ColumnName="origin_db" />
+          <ScalarProperty Name="origin_schema" ColumnName="origin_schema" />
+          <ScalarProperty Name="origin_user" ColumnName="origin_user" />
+          <ScalarProperty Name="destiny_host" ColumnName="destiny_host" />
+          <ScalarProperty Name="destiny_port" ColumnName="destiny_port" />
+          <ScalarProperty Name="destiny_db" ColumnName="destiny_db" />
+          <ScalarProperty Name="destiny_schema" ColumnName="destiny_schema" />
+          <ScalarProperty Name="destiny_user" ColumnName="destiny_user" />
+          <ScalarProperty Name="origin_db_type" ColumnName="origin_db_type" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
