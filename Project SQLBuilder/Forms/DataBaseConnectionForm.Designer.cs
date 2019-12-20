@@ -478,6 +478,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.ClientSize = new System.Drawing.Size(277, 264);
+            this.ControlBox = false;
             this.Controls.Add(this.txbDestSchema);
             this.Controls.Add(this.txbDestPass);
             this.Controls.Add(this.lblDestSchema);
@@ -511,12 +512,13 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(label8);
             this.Controls.Add(this.panelHeader);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.HelpButton = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DataBaseConnectionForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "DataBaseConnectionForm";
             this.TopMost = true;
             this.panelHeader.ResumeLayout(false);
             this.panelHeader.PerformLayout();

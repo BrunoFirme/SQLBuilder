@@ -34,6 +34,7 @@ namespace Project_SQLBuilder.Forms
             InitializeComponent();
             PopulateProjectsCmb();
             lblStatusText.Text = "";
+            RetractOriginTab();
         }
 
         #region Basic form functionality.
@@ -55,6 +56,60 @@ namespace Project_SQLBuilder.Forms
             WindowState = FormWindowState.Minimized;
         }
 
+        private void btnResize_Click(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else if (WindowState == FormWindowState.Maximized) WindowState = FormWindowState.Normal;
+        }
+
+        private void Div1_Click(object sender, EventArgs e)
+        {
+            if (panelLeft.Width == 230)
+            {
+                RetractOriginTab();
+            }
+            else
+            {
+                ExpandOriginTab();
+            }
+        }
+
+        public void ExpandOriginTab()
+        {
+            panelLeft.Width = 230;
+            Div1.Width = 10;
+            lblOrigPanelIndicator.BackColor = Color.Transparent;
+        }
+
+        public void RetractOriginTab()
+        {
+            panelLeft.Width = 0;
+            Div1.Width = 15;
+            lblOrigPanelIndicator.BackColor = Color.SteelBlue;
+        }
+
+        private void Div1_MouseEnter(object sender, EventArgs e)
+        {
+            Div1.BackColor = Color.SteelBlue;
+        }
+
+        private void Div1_MouseLeave(object sender, EventArgs e)
+        {
+            Div1.BackColor = Color.Transparent;
+        }
+
+        private void FormHeader_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else if (WindowState == FormWindowState.Maximized) WindowState = FormWindowState.Normal;
+        }
+
         //Open connection form.
         private void conectarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -74,22 +129,22 @@ namespace Project_SQLBuilder.Forms
         private void rtbInsert_TextChanged(object sender, EventArgs e)
         {
             if (_isTableSwap) return;
-            lblSaveState.BackColor = Color.Yellow;
-            lblStatusText.Text = "";
+            panelBottomState.BackColor = Color.DarkOrange;
+            lblStatusText.Text = "Alterado...";
         }
 
         private void rtbFrom_TextChanged(object sender, EventArgs e)
         {
             if (_isTableSwap) return;
-            lblSaveState.BackColor = Color.Yellow;
-            lblStatusText.Text = "";
+            panelBottomState.BackColor = Color.DarkOrange;
+            lblStatusText.Text = "Alterado...";
         }
 
         private void dgvSelectFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (_isTableSwap) return;
-            lblSaveState.BackColor = Color.Yellow;
-            lblStatusText.Text = "";
+            panelBottomState.BackColor = Color.DarkOrange;
+            lblStatusText.Text = "Alterado...";
         }
 
         #endregion
@@ -145,7 +200,7 @@ namespace Project_SQLBuilder.Forms
 
             if (DestinyConn == null)
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text =
                     @"Não há conexão com o banco de dados destino. Por favor conecte-se para recuperar as informações do banco.";
                 return;
@@ -174,14 +229,14 @@ namespace Project_SQLBuilder.Forms
             {
                 LoadSelectFieldExpressions();
                 PopulateCustomFields();
-                lblSaveState.BackColor = Color.Green;
-                lblStatusText.Text = "";
+                panelBottomState.BackColor = Color.DarkGreen;
+                lblStatusText.Text = @"Campos salvos.";
             }
             else
             {
                 olvCustomField.ClearObjects();
-                lblSaveState.BackColor = Color.Yellow;
-                lblStatusText.Text = "";
+                panelBottomState.BackColor = Color.DarkOrange;
+                lblStatusText.Text = @"Campos não salvos.";
             }
 
             //Verify if the last column is saved on the data-base. This is to prevent wrong coloring when user has added a column but no saved it yet in DB "select_fields".
@@ -189,7 +244,8 @@ namespace Project_SQLBuilder.Forms
             if (!context.SelectFields.Any(x =>
                 x.Column == lastAddedColumn && x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId))
             {
-                lblSaveState.BackColor = Color.Yellow;
+                panelBottomState.BackColor = Color.DarkOrange;
+                lblStatusText.Text = @"Campos não salvos.";
             }
         }
 
@@ -220,7 +276,7 @@ namespace Project_SQLBuilder.Forms
             lblInsert.Text = @"INSERT INTO";
             _currentTable = "";
             lblStatusText.Text = @"";
-            lblSaveState.BackColor = Color.Green;
+            panelBottomState.BackColor = Color.DarkGreen;
             DestinyConn = null;
             OriginConn = null;
 
@@ -300,7 +356,7 @@ namespace Project_SQLBuilder.Forms
 
             if (tscbProjects.SelectedIndex == -1)
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Nenhum projeto selecionado.";
                 return;
             }
@@ -552,7 +608,7 @@ namespace Project_SQLBuilder.Forms
 
             if (_currentTable == "")
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Sem tabela para adicionar campo customizado";
                 return;
             }
@@ -560,7 +616,7 @@ namespace Project_SQLBuilder.Forms
             if (!context.InsertTables
                     .Any(x => x.Table == _currentTable && x.FkProject == pId))
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Marque a tabela antes de adicionar um campo customizado.";
                 return;
             }
@@ -568,7 +624,7 @@ namespace Project_SQLBuilder.Forms
             if (!context.SelectFields
                 .Any(x => x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId))
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Salve a tabela antes de adicionar um campo customizado.";
                 return;
             }
@@ -580,14 +636,14 @@ namespace Project_SQLBuilder.Forms
             var columnName = Interaction.InputBox("Nome da Coluna: ", "Coluna Customizada", "*", 100, 100);
             if (string.IsNullOrEmpty(columnName) || context.CustomFields.Any(x => x.Column == columnName && x.FkInsertTable == idInsertTable))
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Coluna Inválida ou já existente.";
                 return;
             }
             var columnType = Interaction.InputBox("Tipo da Coluna: ", "Coluna Customizada", "*", 100, 100);
             if (string.IsNullOrEmpty(columnType))
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Coluna Inválida";
                 return;
             }
@@ -604,8 +660,8 @@ namespace Project_SQLBuilder.Forms
             context.CustomFields.AddObject(column);
             context.SaveChanges();
 
-            lblSaveState.BackColor = Color.Yellow;
-            lblStatusText.Text = "";
+            panelBottomState.BackColor = Color.DarkOrange;
+            lblStatusText.Text = "Campos não salvos.";
 
             PopulateCustomFields();
         }
@@ -692,7 +748,7 @@ namespace Project_SQLBuilder.Forms
 
             if (tscbProjects.SelectedIndex == -1)
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Erro: Não há nada para salvar.";
                 return;
             }
@@ -705,7 +761,7 @@ namespace Project_SQLBuilder.Forms
             SaveInsertCommand();
             SaveFromCommand();
             SaveSelectFieldExpressions();
-            lblSaveState.BackColor = Color.Green;
+            panelBottomState.BackColor = Color.DarkGreen;
             lblStatusText.Text = @"Tabela e parametros de conexão salvos.";
         }
 
@@ -846,7 +902,7 @@ namespace Project_SQLBuilder.Forms
 
                 if (insertTable == null)
                 {
-                    lblSaveState.BackColor = Color.Red;
+                    panelBottomState.BackColor = Color.DarkRed;
                     lblStatusText.Text =
                         @"Houve um erro no carregamento da conversão. Por favor, verifique a seleção do projeto/tabela.";
                     _isTableSwap = false;
@@ -875,7 +931,7 @@ namespace Project_SQLBuilder.Forms
             if (script != null) new ScriptVisualizationForm(script).Show();
             else
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Não há tabela para gerar. Você marcou a tabela em questão?";
             }
         }
@@ -893,7 +949,7 @@ namespace Project_SQLBuilder.Forms
 
             if (scriptProject == null || scriptProject.InsertTables.Count == 0)
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
                 return;
             }
@@ -933,7 +989,7 @@ namespace Project_SQLBuilder.Forms
 
             if (scriptProject == null || scriptProject.InsertTables.Count == 0)
             {
-                lblSaveState.BackColor = Color.Red;
+                panelBottomState.BackColor = Color.DarkRed;
                 lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
                 return;
             }
@@ -946,7 +1002,7 @@ namespace Project_SQLBuilder.Forms
                 Directory.CreateDirectory(path + "\\old");
                 if (Directory.EnumerateFiles(path + "\\old").Count() != 0)
                 {
-                    lblSaveState.BackColor = Color.Red;
+                    panelBottomState.BackColor = Color.DarkRed;
                     lblStatusText.Text = @"Já existem arquivos na pasta " + path +
                                          @"e seus backups, por favor limpe a pasta de scripts para gerar novos!";
                     return;
@@ -972,7 +1028,7 @@ namespace Project_SQLBuilder.Forms
             }
 
             lblStatusText.Text = @"Scripts salvos em '" + path + @"'.";
-            lblSaveState.BackColor = Color.Green;
+            panelBottomState.BackColor = Color.DarkGreen;
         }
 
         //Actual Script Generation process.
@@ -1040,7 +1096,7 @@ namespace Project_SQLBuilder.Forms
 
                     else if (scriptTable.SelectFields.ElementAt(index).DefaultValue != "" &&
                              scriptTable.SelectFields.ElementAt(index).SelectedField == "")
-                        selectfield = "\n" + scriptTable.SelectFields.ElementAt(index).DefaultValue.PadRight(40, ' ') +
+                        selectfield = "\n'" + scriptTable.SelectFields.ElementAt(index).DefaultValue + "'".PadRight(40, ' ') +
                                       "AS " + scriptTable.SelectFields.ElementAt(index).Column + ",";
                     else
                         selectfield = "\n" + "NULL".PadRight(40, ' ') + "AS " +

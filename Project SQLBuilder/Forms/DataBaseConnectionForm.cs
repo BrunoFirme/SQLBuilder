@@ -252,6 +252,8 @@ namespace Project_SQLBuilder.Forms
             if (cmbOrigDbType.SelectedIndex == -1) return;
             MainForm.SetOriginConnection(new ConversionDataFactory(txbOrigHost.Text, txbOrigPort.Text, txbOrigDatabase.Text, txbOrigUser.Text, txbOrigPass.Text, txbOrigSchema.Text).GetConversionDataGetter(cmbOrigDbType.Text));
             MainForm.lblStatusText.Text = @"Conectado a base origem.";
+            MainForm.panelBottomState.BackColor = Color.DarkGreen;           
+            MainForm.ExpandOriginTab();
         }
 
         private void lblConnectDestiny_Click(object sender, EventArgs e)
@@ -259,6 +261,7 @@ namespace Project_SQLBuilder.Forms
             if (cmbDestDbType.SelectedIndex == -1) return;
             MainForm.SetDestinyConnection(new ConversionDataFactory(txbDestHost.Text, txbDestPort.Text, txbDestDatabase.Text, txbDestUser.Text, txbDestPass.Text, txbDestSchema.Text).GetConversionDataGetter(cmbDestDbType.Text));
             MainForm.lblStatusText.Text = @"Conectado a base destino.";
+            MainForm.panelBottomState.BackColor = Color.DarkGreen;
         }
 
     }
