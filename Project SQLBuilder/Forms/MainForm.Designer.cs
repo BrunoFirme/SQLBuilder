@@ -44,10 +44,11 @@ namespace Project_SQLBuilder.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelHeader = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblProgramTitle = new System.Windows.Forms.Label();
             this.btnMinimize = new System.Windows.Forms.Button();
@@ -114,6 +115,7 @@ namespace Project_SQLBuilder.Forms
             // panelHeader
             // 
             this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+            this.panelHeader.Controls.Add(this.label2);
             this.panelHeader.Controls.Add(this.label4);
             this.panelHeader.Controls.Add(this.lblProgramTitle);
             this.panelHeader.Controls.Add(this.btnMinimize);
@@ -124,6 +126,17 @@ namespace Project_SQLBuilder.Forms
             this.panelHeader.Size = new System.Drawing.Size(1177, 31);
             this.panelHeader.TabIndex = 0;
             this.panelHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseMove);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.ForeColor = System.Drawing.Color.DimGray;
+            this.label2.Location = new System.Drawing.Point(69, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(81, 13);
+            this.label2.TabIndex = 39;
+            this.label2.Text = "por Bruno Firme";
             // 
             // label4
             // 
@@ -140,9 +153,9 @@ namespace Project_SQLBuilder.Forms
             this.lblProgramTitle.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.lblProgramTitle.Location = new System.Drawing.Point(12, 9);
             this.lblProgramTitle.Name = "lblProgramTitle";
-            this.lblProgramTitle.Size = new System.Drawing.Size(172, 13);
+            this.lblProgramTitle.Size = new System.Drawing.Size(60, 13);
             this.lblProgramTitle.TabIndex = 2;
-            this.lblProgramTitle.Text = "SQL Script Builder (by Bruno Firme)";
+            this.lblProgramTitle.Text = "SQLBuilder";
             // 
             // btnMinimize
             // 
@@ -211,14 +224,14 @@ namespace Project_SQLBuilder.Forms
             this.dgvSelectFields.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvSelectFields.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dgvSelectFields.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSelectFields.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSelectFields.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSelectFields.ColumnHeadersHeight = 20;
             this.dgvSelectFields.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvSelectFields.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -228,14 +241,14 @@ namespace Project_SQLBuilder.Forms
             this.colColumn,
             this.colColumnType});
             this.dgvSelectFields.Cursor = System.Windows.Forms.Cursors.Default;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSelectFields.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSelectFields.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSelectFields.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvSelectFields.EnableHeadersVisualStyles = false;
             this.dgvSelectFields.Location = new System.Drawing.Point(214, 170);
@@ -288,11 +301,11 @@ namespace Project_SQLBuilder.Forms
             // 
             this.colColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colColumn.DataPropertyName = "colColumn";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
-            this.colColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            this.colColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.colColumn.FillWeight = 61.54822F;
             this.colColumn.HeaderText = "COLUNA DESTINO";
             this.colColumn.Name = "colColumn";
@@ -514,7 +527,7 @@ namespace Project_SQLBuilder.Forms
             // 
             // olvTable
             // 
-            this.olvTable.AspectName = "table";
+            this.olvTable.AspectName = "Table";
             this.olvTable.MaximumWidth = 185;
             this.olvTable.MinimumWidth = 185;
             this.olvTable.Text = "Tabela";
@@ -522,7 +535,7 @@ namespace Project_SQLBuilder.Forms
             // 
             // olvOrder
             // 
-            this.olvOrder.AspectName = "order";
+            this.olvOrder.AspectName = "Order";
             this.olvOrder.IsEditable = false;
             this.olvOrder.MaximumWidth = 20;
             this.olvOrder.MinimumWidth = 20;
@@ -696,14 +709,14 @@ namespace Project_SQLBuilder.Forms
             // 
             // olvColumn5
             // 
-            this.olvColumn5.AspectName = "column";
+            this.olvColumn5.AspectName = "Column";
             this.olvColumn5.MaximumWidth = 115;
             this.olvColumn5.MinimumWidth = 115;
             this.olvColumn5.Width = 115;
             // 
             // olvColumn6
             // 
-            this.olvColumn6.AspectName = "default_value";
+            this.olvColumn6.AspectName = "DefaultValue";
             this.olvColumn6.MaximumWidth = 85;
             this.olvColumn6.MinimumWidth = 85;
             this.olvColumn6.Width = 85;
@@ -885,13 +898,14 @@ namespace Project_SQLBuilder.Forms
         private ToolStripMenuItem novoToolStripMenuItem;
         private ToolStripMenuItem excluirToolStripMenuItem;
         private ToolStripMenuItem todosParaTxtToolStripMenuItem;
-        private Label lblStatusText;
+        public Label lblStatusText;
         private Label lblAddCustomField;
         private Label lblCustomFields;
         private BrightIdeasSoftware.ObjectListView olvCustomField;
         private Label lblRemoveCustomField;
         private BrightIdeasSoftware.OLVColumn olvColumn5;
         private BrightIdeasSoftware.OLVColumn olvColumn6;
+        private Label label2;
 
     }
 }

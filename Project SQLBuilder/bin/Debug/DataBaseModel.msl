@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EntitiesStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="SQLBuilderModel.Project">
+        <MappingFragment StoreEntitySet="projects">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="Name" ColumnName="name" />
+          <ScalarProperty Name="DestinyDbType" ColumnName="destiny_db_type" />
+          <ScalarProperty Name="OriginHost" ColumnName="origin_host" />
+          <ScalarProperty Name="OriginPort" ColumnName="origin_port" />
+          <ScalarProperty Name="OriginDb" ColumnName="origin_db" />
+          <ScalarProperty Name="OriginSchema" ColumnName="origin_schema" />
+          <ScalarProperty Name="OriginUser" ColumnName="origin_user" />
+          <ScalarProperty Name="DestinyHost" ColumnName="destiny_host" />
+          <ScalarProperty Name="DestinyPort" ColumnName="destiny_port" />
+          <ScalarProperty Name="DestinyDb" ColumnName="destiny_db" />
+          <ScalarProperty Name="DestinySchema" ColumnName="destiny_schema" />
+          <ScalarProperty Name="DestinyUser" ColumnName="destiny_user" />
+          <ScalarProperty Name="OriginDbType" ColumnName="origin_db_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InsertTables">
+      <EntityTypeMapping TypeName="SQLBuilderModel.InsertTable">
+        <MappingFragment StoreEntitySet="insert_tables">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="FkProject" ColumnName="fk_project" />
+          <ScalarProperty Name="Table" ColumnName="table" />
+          <ScalarProperty Name="Order" ColumnName="order" />
+          <ScalarProperty Name="InsertComand" ColumnName="insert_comand" />
+          <ScalarProperty Name="FromComand" ColumnName="from_comand" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SelectFields">
+      <EntityTypeMapping TypeName="SQLBuilderModel.SelectField">
+        <MappingFragment StoreEntitySet="select_fields">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="FkInsertTable" ColumnName="fk_insert_table" />
+          <ScalarProperty Name="SelectedField" ColumnName="selected_field" />
+          <ScalarProperty Name="Column" ColumnName="column" />
+          <ScalarProperty Name="DefaultValue" ColumnName="default_value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomFields">
+      <EntityTypeMapping TypeName="SQLBuilderModel.CustomField">
+        <MappingFragment StoreEntitySet="custom_fields">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="FkInsertTable" ColumnName="fk_insert_table" />
+          <ScalarProperty Name="Column" ColumnName="column" />
+          <ScalarProperty Name="DefaultValue" ColumnName="default_value" />
+          <ScalarProperty Name="Columntype" ColumnName="columntype" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

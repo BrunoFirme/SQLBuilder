@@ -1,4 +1,4 @@
-﻿namespace Project_SQLBuilder
+﻿namespace Project_SQLBuilder.Forms
 {
     partial class ScriptVisualizationForm
     {

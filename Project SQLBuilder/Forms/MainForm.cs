@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Project_SQLBuilder.Interfaces;
+using SQLBuilderModel;
 
 namespace Project_SQLBuilder.Forms
 {
@@ -14,6 +16,7 @@ namespace Project_SQLBuilder.Forms
         //Parameters used to know when its an UI transition and not user-input that should be saved in DB or reacted in some way.
         private bool _isUiChange;
 
+        //Used to avoid wrong SaveState label coloring.
         private bool _isTableSwap;
 
         //Used for script generation.
@@ -22,6 +25,7 @@ namespace Project_SQLBuilder.Forms
         //Connections set in the connection form.
         public DataBaseConnectionForm ConfigForm;
 
+        //Getters of data-base information, set in the DataBaseConnectionForm.
         public IConversionDataGetter OriginConn;
         public IConversionDataGetter DestinyConn;
 
@@ -66,7 +70,7 @@ namespace Project_SQLBuilder.Forms
             }
         }
 
-        //COLOR CHANGES TO SAVESTATE LABEL
+        //Apply color change to SaveState label when a change occurs to data in SelectField.
         private void rtbInsert_TextChanged(object sender, EventArgs e)
         {
             if (_isTableSwap) return;
@@ -117,22 +121,24 @@ namespace Project_SQLBuilder.Forms
             dlvOrigColumns.DataSource = OriginConn.SelectColumns(dlvOrigTables.SelectedItem.Text, null);
         }
 
-        //Populate select datagridview of destiny data-base columns.
+        //Call method to populate SelectGrid with destiny table data.
         private void dlvDestTables_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (dlvDestTables.SelectedItem == null) return;
             _currentTable = dlvDestTables.SelectedItem.Text;
-            PopulateSelectFields();
+            PopulateSelectField();
         }
 
+        //Call method to populate SelectGrid with destiny table data.
         private void olvInsertTable_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (olvInsertTable.SelectedItem == null) return;
             _currentTable = olvInsertTable.SelectedItem.Text;
-            PopulateSelectFields();
+            PopulateSelectField();
         }
 
-        private void PopulateSelectFields()
+        //Check if connection is open and if so, populate SelectGrid with the columns. Calls UpdateSelectFieldtoProjectState at the end to check persistence.
+        private void PopulateSelectField()
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
@@ -144,50 +150,68 @@ namespace Project_SQLBuilder.Forms
                     @"Não há conexão com o banco de dados destino. Por favor conecte-se para recuperar as informações do banco.";
                 return;
             }
-
             if (tscbProjects.SelectedIndex == -1) return;
-            rtbFrom.Text = null;
-            rtbInsert.Text = null;
 
-            lblInsert.Text = @"INSERT INTO " + _currentTable;
+            CleanSelectField();
 
             var context = new Entities();
+            dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, context.CustomFields.Where(x => x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId));
+            lblInsert.Text = @"INSERT INTO " + _currentTable;
 
-            olvCustomField.ClearObjects();
-            dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, context.custom_field.Where(x => x.insert_table.table == _currentTable && x.insert_table.fk_project == pId));
+            UpdateSelectFieldtoProjectState();
+        }
 
-            if (context.select_field.Any(x =>
-                x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
+        //Checks if table loaded to SelectGrid has data saved in data-base, if so calls the appropriate loading methods and paint the SaveState accordingly.
+        private void UpdateSelectFieldtoProjectState()
+        {
+            //LINQ does not take C# methods as values.
+            var pId = GetCurrentProjectId();
+
+            var context = new Entities();
+            //Check if table has been saved already, if so load its data, if not show its SaveStatus of not saved.
+            if (context.SelectFields.Any(x =>
+                x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId))
             {
-                LoadCommands();
+                LoadSelectFieldExpressions();
                 PopulateCustomFields();
                 lblSaveState.BackColor = Color.Green;
                 lblStatusText.Text = "";
             }
             else
             {
+                olvCustomField.ClearObjects();
                 lblSaveState.BackColor = Color.Yellow;
                 lblStatusText.Text = "";
             }
 
+            //Verify if the last column is saved on the data-base. This is to prevent wrong coloring when user has added a column but no saved it yet in DB "select_fields".
             var lastAddedColumn = dgvSelectFields[3, dgvSelectFields.RowCount - 1].Value.ToString();
-
-            if (!context.select_field.Any(x =>
-                x.column == lastAddedColumn && x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
+            if (!context.SelectFields.Any(x =>
+                x.Column == lastAddedColumn && x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId))
             {
                 lblSaveState.BackColor = Color.Yellow;
             }
         }
 
+        //Clean all SelectGrid cells and textboxes of any table/user data, as to prepare for a new table.
+        private void CleanSelectField()
+        {
+            rtbFrom.Text = null;
+            rtbInsert.Text = null;
+
+            //This little trick clears the rows without fucking up column names (damn datagrid and data-sources)
+            if (dgvSelectFields.DataSource == null) return;
+            var dt = dgvSelectFields.DataSource as DataTable;
+            // ReSharper disable once PossibleNullReferenceException
+            dt.Rows.Clear();
+            dgvSelectFields.DataSource = dt;
+        }
+
         //Clears lists and connections to set up a fresh screen.
         private void ClearAll()
         {
-            DestinyConn = null;
-            OriginConn = null;
-            dgvSelectFields.DataSource = null;
-            dlvOrigTables.DataSource = null;
-            dlvOrigColumns.DataSource = null;
-            dlvDestTables.DataSource = null;
+            dlvOrigTables.ClearObjects();
+            dlvOrigColumns.ClearObjects();
             dlvDestTables.ClearObjects();
             olvInsertTable.ClearObjects();
             olvCustomField.ClearObjects();
@@ -197,32 +221,15 @@ namespace Project_SQLBuilder.Forms
             _currentTable = "";
             lblStatusText.Text = @"";
             lblSaveState.BackColor = Color.Green;
-        }
+            DestinyConn = null;
+            OriginConn = null;
 
-        //Check project tables in destiny data-base tables list.
-        private void CheckInsertTables()
-        {
-            if (dlvDestTables.Items.Count != 0)
-                dlvDestTables.UncheckAll();
-
-            if (tscbProjects.SelectedItem == null) return;
-
-            var pId = GetCurrentProjectId();
-            var context = new Entities();
-            var query = from it in context.insert_table
-                where it.fk_project == pId
-                select it;
-
-            foreach (var it in query)
-            {
-                for (var i = 0; i < dlvDestTables.GetItemCount(); i++)
-                {
-                    if (dlvDestTables.Items[i].Text == it.table)
-                    {
-                        dlvDestTables.GetItem(i).Checked = true;
-                    }
-                }
-            }
+            //This little trick clears the rows without fucking up column names (damn datagrid and data-sources)
+            if (dgvSelectFields.DataSource == null) return;
+            var dt = dgvSelectFields.DataSource as DataTable;
+            // ReSharper disable once PossibleNullReferenceException
+            dt.Rows.Clear();
+            dgvSelectFields.DataSource = dt;
         }
 
         #endregion
@@ -234,11 +241,11 @@ namespace Project_SQLBuilder.Forms
             tscbProjects.Items.Clear();
 
             var context = new Entities();
-            var query = from it in context.project orderby it.name select it;
+            var query = from it in context.Projects orderby it.Name select it;
 
             foreach (var p in query)
             {
-                tscbProjects.Items.Add(p.name);
+                tscbProjects.Items.Add(p.Name);
             }
         }
 
@@ -250,9 +257,9 @@ namespace Project_SQLBuilder.Forms
 
             if (tscbProjects.SelectedItem != null)
             {
-                qfkProject = (from o in context.project
-                    where o.name == tscbProjects.SelectedItem.ToString()
-                    select o.id).Max();
+                qfkProject = (from o in context.Projects
+                    where o.Name == tscbProjects.SelectedItem.ToString()
+                    select o.Id).Max();
             }
 
             return qfkProject;
@@ -269,14 +276,14 @@ namespace Project_SQLBuilder.Forms
                 return;
             }
 
-            var newProject = new project
+            var newProject = new Project()
             {
-                name = name
+                Name = name
             };
 
             var context = new Entities();
 
-            context.project.Add(newProject);
+            context.Projects.AddObject(newProject);
 
             context.SaveChanges();
 
@@ -300,14 +307,14 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
 
-            var deleteProject = context.project.SingleOrDefault(x => x.id == pId);
+            var deleteProject = context.Projects.SingleOrDefault(x => x.Id == pId);
 
             if (deleteProject == null) return;
 
-            if (MessageBox.Show(@"Deseja mesmo excluir o projeto " + deleteProject.name + @"?", @"Alerta!",
+            if (MessageBox.Show(@"Deseja mesmo excluir o projeto " + deleteProject.Name + @"?", @"Alerta!",
                     MessageBoxButtons.YesNo) == DialogResult.No) return;
 
-            context.project.Remove(deleteProject);
+            context.Projects.DeleteObject(deleteProject);
             context.SaveChanges();
 
             PopulateProjectsCmb();
@@ -332,21 +339,47 @@ namespace Project_SQLBuilder.Forms
 
         #region Insert_table object related functions.
 
+        //Populate InsertTables list with project selected tables.
         private void PopulateInsertTablesList()
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
 
             var context = new Entities();
-            olvInsertTable.SetObjects(context.insert_table.Where(x => x.fk_project == pId).OrderBy(x => x.order)
-                .ToList());
+            olvInsertTable.SetObjects(context.InsertTables.Where(x => x.FkProject == pId).OrderBy(x => x.Order));
 
             _isUiChange = true;
             olvInsertTable.CheckAll();
             _isUiChange = false;
         }
 
-        //Add or remove an Insert_Table entry in data-base based on item being checked on the Destiny Tables ListView.
+        //Check project tables in destiny data-base table's list.
+        private void CheckInsertTables()
+        {
+            if (dlvDestTables.Items.Count != 0)
+                dlvDestTables.UncheckAll();
+
+            if (tscbProjects.SelectedItem == null) return;
+
+            var pId = GetCurrentProjectId();
+            var context = new Entities();
+            var query = from it in context.InsertTables
+                where it.FkProject == pId
+                select it;
+
+            foreach (var it in query)
+            {
+                for (var i = 0; i < dlvDestTables.GetItemCount(); i++)
+                {
+                    if (dlvDestTables.Items[i].Text == it.Table)
+                    {
+                        dlvDestTables.GetItem(i).Checked = true;
+                    }
+                }
+            }
+        }
+
+        //Next two methods: Add or remove an Insert_Table entry in data-base based on item being checked on the Destiny Tables ListView.
         private void dlvDestTables_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             //LINQ does not take C# methods as values.
@@ -357,7 +390,7 @@ namespace Project_SQLBuilder.Forms
             var context = new Entities();
             var tablename = e.Item.Text;
             var updateTable =
-                context.insert_table.SingleOrDefault(x => x.table == tablename && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == tablename && x.FkProject == pId);
 
             if (e.Item.Checked && updateTable == null)
             {
@@ -386,7 +419,7 @@ namespace Project_SQLBuilder.Forms
             }
         }
 
-        //Confirm table deletion from project.
+        //Next two methods: Confirm table deletion from project.
         private void dlvDestTables_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (_isUiChange) return;
@@ -403,6 +436,7 @@ namespace Project_SQLBuilder.Forms
                     MessageBoxButtons.YesNo) == DialogResult.No) e.NewValue = e.CurrentValue;
         }
 
+        //Takes table that has been checked in destiny database list and saves it in the database project's InsertTables.
         private void InsertCheckedTableInProject(int index)
         {
             //LINQ does not take C# methods as values.
@@ -410,20 +444,21 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
 
-            var newTable = new insert_table
+            var newTable = new InsertTable()
             {
-                table = dlvDestTables.Items[index].Text,
-                order = ((from o in context.insert_table
-                            where o.fk_project == pId
-                            select o.order).Max()) + 1,
-                fk_project = pId
+                Table = dlvDestTables.Items[index].Text,
+                Order = ((from o in context.InsertTables
+                            where o.FkProject == pId
+                            select o.Order).Max()) + 1,
+                FkProject = pId
             };
 
-            context.insert_table.Add(newTable);
+            context.InsertTables.AddObject(newTable);
 
             context.SaveChanges();
         }
 
+        //Takes table that has been unchecked in destiny database list/InsertTables list and removes it from the database project's InsertTables.
         private void DeleteUncheckedTableFromProject(string tableName)
         {
             //LINQ does not take C# methods as values. 
@@ -431,29 +466,29 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
 
-            var deleteTable = context.insert_table.SingleOrDefault(x => x.table == tableName && x.fk_project == pId);
+            var deleteTable = context.InsertTables.SingleOrDefault(x => x.Table == tableName && x.FkProject == pId);
 
             if (deleteTable == null) return;
 
-            if (deleteTable.order == (from o in context.insert_table where o.fk_project == pId select o.order).Max())
+            if (deleteTable.Order == (from o in context.InsertTables where o.FkProject == pId select o.Order).Max())
             {
-                context.insert_table.Remove(deleteTable);
+                context.InsertTables.DeleteObject(deleteTable);
                 context.SaveChanges();
                 PopulateInsertTablesList();
             }
             else
             {
-                context.insert_table.Remove(deleteTable);
-                var project = context.project.SingleOrDefault(x => x.id == pId);
+                context.InsertTables.DeleteObject(deleteTable);
+                var project = context.Projects.SingleOrDefault(x => x.Id == pId);
                 if (project == null) return;
-                var tables = project.insert_table.OrderBy(x => x.id);
+                var tables = project.InsertTables.OrderBy(x => x.Id);
 
                 // ReSharper disable once PossibleMultipleEnumeration
                 // fucc resharper
                 for (var orderIndex = 0; orderIndex < tables.Count(); orderIndex++)
                 {
                     // ReSharper disable once PossibleMultipleEnumeration
-                    tables.ElementAt(orderIndex).order = orderIndex + 1;
+                    tables.ElementAt(orderIndex).Order = orderIndex + 1;
                 }
 
                 context.SaveChanges();
@@ -487,17 +522,17 @@ namespace Project_SQLBuilder.Forms
             var context = new Entities();
             var dragtablename = olvInsertTable.SelectedItem.Text;
             var draggedTable =
-                context.insert_table.SingleOrDefault(x => x.table == dragtablename && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == dragtablename && x.FkProject == pId);
             var targetTable =
-                context.insert_table.SingleOrDefault(x => x.table == e.DropTargetItem.Text && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == e.DropTargetItem.Text && x.FkProject == pId);
 
             //fucc resharper get smarter
             // ReSharper disable once PossibleNullReferenceException
-            var orderBackup = draggedTable.order;
+            var orderBackup = draggedTable.Order;
 
             // ReSharper disable once PossibleNullReferenceException
-            draggedTable.order = targetTable.order;
-            targetTable.order = orderBackup;
+            draggedTable.Order = targetTable.Order;
+            targetTable.Order = orderBackup;
 
             context.SaveChanges();
 
@@ -508,6 +543,7 @@ namespace Project_SQLBuilder.Forms
 
         #region Custom Field related functions.
 
+        //Create new CustomField and save to data-base project's CustomFields.
         private void lblddCustomField_Click(object sender, EventArgs e)
         {
             //LINQ does not take C# methods as values.
@@ -521,16 +557,16 @@ namespace Project_SQLBuilder.Forms
                 return;
             }
 
-            if (!context.insert_table
-                    .Any(x => x.table == _currentTable && x.fk_project == pId))
+            if (!context.InsertTables
+                    .Any(x => x.Table == _currentTable && x.FkProject == pId))
             {
                 lblSaveState.BackColor = Color.Red;
                 lblStatusText.Text = @"Marque a tabela antes de adicionar um campo customizado.";
                 return;
             }
 
-            if (!context.select_field
-                .Any(x => x.insert_table.table == _currentTable && x.insert_table.fk_project == pId))
+            if (!context.SelectFields
+                .Any(x => x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId))
             {
                 lblSaveState.BackColor = Color.Red;
                 lblStatusText.Text = @"Salve a tabela antes de adicionar um campo customizado.";
@@ -538,11 +574,11 @@ namespace Project_SQLBuilder.Forms
             }
 
             // ReSharper disable once PossibleNullReferenceException
-            var idInsertTable = context.insert_table
-                .SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId).id;
+            var idInsertTable = context.InsertTables
+                .SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId).Id;
 
             var columnName = Interaction.InputBox("Nome da Coluna: ", "Coluna Customizada", "*", 100, 100);
-            if (string.IsNullOrEmpty(columnName) || context.custom_field.Any(x => x.column == columnName && x.fk_insert_table == idInsertTable))
+            if (string.IsNullOrEmpty(columnName) || context.CustomFields.Any(x => x.Column == columnName && x.FkInsertTable == idInsertTable))
             {
                 lblSaveState.BackColor = Color.Red;
                 lblStatusText.Text = @"Coluna Inválida ou já existente.";
@@ -557,41 +593,45 @@ namespace Project_SQLBuilder.Forms
             }
             var defaultValue = Interaction.InputBox("Valor Padrão: ", "Coluna Customizada", "*", 100, 100);
 
-            var column = new custom_field
+            var column = new CustomField()
             {
-                column = columnName,
-                columntype = columnType,
-                default_value = defaultValue,
-                fk_insert_table = idInsertTable
+                Column = columnName,
+                Columntype = columnType,
+                DefaultValue = defaultValue,
+                FkInsertTable = idInsertTable
             };
 
-            context.custom_field.Add(column);
+            context.CustomFields.AddObject(column);
             context.SaveChanges();
 
             lblSaveState.BackColor = Color.Yellow;
+            lblStatusText.Text = "";
 
             PopulateCustomFields();
         }
 
+        //Populate the list of CustomFields.
         private void PopulateCustomFields()
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
 
             var context = new Entities();
-            var customfields = context.custom_field.Where(x =>
-                x.insert_table.table == _currentTable && x.insert_table.fk_project == pId);
+            var customfields = context.CustomFields.Where(x =>
+                x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId);
 
             olvCustomField.SetObjects(customfields);
 
             UpdateSelectFieldWithNewCol(customfields);
         }
 
-        private void UpdateSelectFieldWithNewCol(IQueryable<custom_field> customField)
+        //Updates the SelectGrid with a newly added column.
+        private void UpdateSelectFieldWithNewCol(IQueryable<CustomField> customField)
         {
             dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, customField);
         }
 
+        //Removes CustomField and (if exists) its saved SelectFields from the data-base. Reloads SelectGrid to show changes.
         private void lblRemoveCustomField_Click(object sender, EventArgs e)
         {
             //LINQ does not take C# methods as values.
@@ -600,20 +640,20 @@ namespace Project_SQLBuilder.Forms
             if (olvCustomField.SelectedIndex == -1) return;
 
             var context = new Entities();
-            var deleteCustomField = context.custom_field.SingleOrDefault(x =>
-                x.column == olvCustomField.SelectedItem.Text && x.insert_table.table == _currentTable &&
-                x.insert_table.fk_project == pId);
+            var deleteCustomField = context.CustomFields.SingleOrDefault(x =>
+                x.Column == olvCustomField.SelectedItem.Text && x.InsertTable.Table == _currentTable &&
+                x.InsertTable.FkProject == pId);
 
-            var cfSelectLine = context.select_field.SingleOrDefault(x =>
-                x.column == deleteCustomField.column && x.insert_table.table == deleteCustomField.insert_table.table &&
-                x.insert_table.fk_project == pId);
+            var cfSelectLine = context.SelectFields.SingleOrDefault(x =>
+                x.Column == deleteCustomField.Column && x.InsertTable.Table == deleteCustomField.InsertTable.Table &&
+                x.InsertTable.FkProject == pId);
 
             if (MessageBox.Show(@"Deseja mesmo excluir este campo customizado?", @"Alerta!",
                     MessageBoxButtons.YesNo) == DialogResult.No) return;
             if (deleteCustomField != null)
-                context.custom_field.Remove(deleteCustomField);
+                context.CustomFields.DeleteObject(deleteCustomField);
             if (cfSelectLine != null)
-                context.select_field.Remove(cfSelectLine);
+                context.SelectFields.DeleteObject(cfSelectLine);
 
             context.SaveChanges();
 
@@ -648,7 +688,7 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
             var insertTable =
-                context.insert_table.SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId);
 
             if (tscbProjects.SelectedIndex == -1)
             {
@@ -664,11 +704,12 @@ namespace Project_SQLBuilder.Forms
 
             SaveInsertCommand();
             SaveFromCommand();
-            SaveSelectCommands();
+            SaveSelectFieldExpressions();
             lblSaveState.BackColor = Color.Green;
             lblStatusText.Text = @"Tabela e parametros de conexão salvos.";
         }
 
+        //Save text above SelectGrid to come before the Insert Expression.
         private void SaveInsertCommand()
         {
             //LINQ does not take C# methods as values.
@@ -677,14 +718,15 @@ namespace Project_SQLBuilder.Forms
             var context = new Entities();
 
             var updateTable =
-                context.insert_table.SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId);
 
             if (updateTable == null) return;
 
-            updateTable.insert_comand = rtbInsert.Text;
+            updateTable.InsertComand = rtbInsert.Text;
             context.SaveChanges();
         }
 
+        //Save text to come after "from" in the script.
         private void SaveFromCommand()
         {
             //LINQ does not take C# methods as values.
@@ -693,15 +735,16 @@ namespace Project_SQLBuilder.Forms
             var context = new Entities();
 
             var updateTable =
-                context.insert_table.SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId);
 
             if (updateTable == null) return;
 
-            updateTable.from_comand = rtbFrom.Text;
+            updateTable.FromComand = rtbFrom.Text;
             context.SaveChanges();
         }
 
-        private void SaveSelectCommands()
+        //Saves the expressions in the SelectGrid.
+        private void SaveSelectFieldExpressions()
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
@@ -709,38 +752,39 @@ namespace Project_SQLBuilder.Forms
             var context = new Entities();
             // ReSharper disable once PossibleNullReferenceException
             // Get the insert table fk, cant actually be null because it has to have its checkbox checked (aka in the data-base) in order to get to this.
-            var idInsertTable = context.insert_table
-                .SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId).id;
+            var idInsertTable = context.InsertTables
+                .SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId).Id;
 
             foreach (DataGridViewRow row in dgvSelectFields.Rows)
             {
                 var columnName = row.Cells[3].Value.ToString();
 
-                var updateField = context.select_field.FirstOrDefault(s =>
-                    s.fk_insert_table == idInsertTable && s.insert_table.fk_project == pId && s.column == columnName);
+                var updateField = context.SelectFields.FirstOrDefault(s =>
+                    s.FkInsertTable == idInsertTable && s.InsertTable.FkProject == pId && s.Column == columnName);
 
                 if (updateField == null)
                 {
-                    var newField = new select_field
+                    var newField = new SelectField
                     {
-                        column = columnName,
-                        fk_insert_table = idInsertTable,
-                        selected_field = row.Cells[0].Value.ToString(),
-                        default_value = row.Cells[1].Value.ToString()
+                        Column = columnName,
+                        FkInsertTable = idInsertTable,
+                        SelectedField = row.Cells[0].Value.ToString(),
+                        DefaultValue = row.Cells[1].Value.ToString()
                     };
 
-                    context.select_field.Add(newField);
+                    context.SelectFields.AddObject(newField);
                     context.SaveChanges();
                 }
                 else
                 {
-                    updateField.selected_field = row.Cells[0].Value.ToString();
-                    updateField.default_value = row.Cells[1].Value.ToString();
+                    updateField.SelectedField = row.Cells[0].Value.ToString();
+                    updateField.DefaultValue = row.Cells[1].Value.ToString();
                     context.SaveChanges();
                 }
             }
         }
 
+        //Saves the information in the current connection string(s) to the data-base to be loaded when project is selected.
         private void SaveConnectionParameters()
         {
             //LINQ does not take C# methods as values.
@@ -748,33 +792,34 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
 
-            var updateProject = context.project.SingleOrDefault(x => x.id == pId);
+            var updateProject = context.Projects.SingleOrDefault(x => x.Id == pId);
 
             if (updateProject == null) return;
 
             if (DestinyConn != null)
             {
-                updateProject.destiny_db_type = DestinyConn.Type;
-                updateProject.destiny_host = DestinyConn.Host;
-                updateProject.destiny_port = DestinyConn.Port;
-                updateProject.destiny_db = DestinyConn.Database;
-                updateProject.destiny_schema = DestinyConn.Schema;
-                updateProject.destiny_user = DestinyConn.User;
+                updateProject.DestinyDbType = DestinyConn.Type;
+                updateProject.DestinyHost = DestinyConn.Host;
+                updateProject.DestinyPort = DestinyConn.Port;
+                updateProject.DestinyDb = DestinyConn.Database;
+                updateProject.DestinySchema = DestinyConn.Schema;
+                updateProject.DestinyUser = DestinyConn.User;
             }
             if (OriginConn != null)
             {
-                updateProject.origin_db_type = OriginConn.Type;
-                updateProject.origin_host = OriginConn.Host;
-                updateProject.origin_port = OriginConn.Port;
-                updateProject.origin_db = OriginConn.Database;
-                updateProject.origin_schema = OriginConn.Schema;
-                updateProject.origin_user = OriginConn.User;
+                updateProject.OriginDbType = OriginConn.Type;
+                updateProject.OriginHost = OriginConn.Host;
+                updateProject.OriginPort = OriginConn.Port;
+                updateProject.OriginDb = OriginConn.Database;
+                updateProject.OriginSchema = OriginConn.Schema;
+                updateProject.OriginUser = OriginConn.User;
             }
 
             if (OriginConn != null || DestinyConn != null) context.SaveChanges();
         }
 
-        private void LoadCommands()
+        //Loads SelectField expressions and insert/from to the SelectGrid.
+        private void LoadSelectFieldExpressions()
         {
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
@@ -786,12 +831,12 @@ namespace Project_SQLBuilder.Forms
             // ReSharper disable once PossibleNullReferenceException
             // Get the insert table fk, cant actually be null because it has to have its checkbox checked (aka in the data-base) in order to get to this.
             var insertTable =
-                context.insert_table.SingleOrDefault(x => x.table == _currentTable && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == _currentTable && x.FkProject == pId);
             foreach (DataGridViewRow row in dgvSelectFields.Rows)
             {
                 var column = row.Cells[3].Value.ToString();
-                var selectField = context.select_field.SingleOrDefault(x =>
-                    x.column == column && x.fk_insert_table == insertTable.id && x.insert_table.fk_project == pId);
+                var selectField = context.SelectFields.SingleOrDefault(x =>
+                    x.Column == column && x.FkInsertTable == insertTable.Id && x.InsertTable.FkProject == pId);
 
                 if (selectField == null)
                 {
@@ -809,11 +854,11 @@ namespace Project_SQLBuilder.Forms
                 }
 
                 //Load commands.
-                rtbInsert.Text = insertTable.insert_comand;
-                rtbFrom.Text = insertTable.from_comand;
+                rtbInsert.Text = insertTable.InsertComand;
+                rtbFrom.Text = insertTable.FromComand;
 
-                row.Cells[0].Value = selectField.selected_field;
-                row.Cells[1].Value = selectField.default_value;
+                row.Cells[0].Value = selectField.SelectedField;
+                row.Cells[1].Value = selectField.DefaultValue;
             }
 
             _isTableSwap = false;
@@ -844,9 +889,9 @@ namespace Project_SQLBuilder.Forms
             var allScripts = new StringBuilder();
 
             var context = new Entities();
-            var scriptProject = context.project.SingleOrDefault(x => x.id == pId);
+            var scriptProject = context.Projects.SingleOrDefault(x => x.Id == pId);
 
-            if (scriptProject == null || scriptProject.insert_table.Count == 0)
+            if (scriptProject == null || scriptProject.InsertTables.Count == 0)
             {
                 lblSaveState.BackColor = Color.Red;
                 lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
@@ -855,23 +900,23 @@ namespace Project_SQLBuilder.Forms
 
             // ReSharper disable once SuggestVarOrType_SimpleTypes
             // fucc resharper
-            for (var index = 0; index < scriptProject.insert_table.Count; index++)
+            for (var index = 0; index < scriptProject.InsertTables.Count; index++)
             {
                 // ReSharper disable once PossibleNullReferenceException
-                if (scriptProject.insert_table.SingleOrDefault(x => x.order == index + 1).select_field.Count == 0)
+                if (scriptProject.InsertTables.SingleOrDefault(x => x.Order == index + 1).SelectFields.Count == 0)
                     // ReSharper disable once PossibleNullReferenceException
                     allScripts.Append(("\n").PadRight(60, '-') + "\nScript vazio para a tabela " +
-                                      scriptProject.insert_table.SingleOrDefault(x => x.order == index + 1).table +
+                                      scriptProject.InsertTables.SingleOrDefault(x => x.Order == index + 1).Table +
                                       ".");
                 else if (index == 0)
                     // ReSharper disable once PossibleNullReferenceException
-                    allScripts.Append(GenerateScript(scriptProject.insert_table
-                        .SingleOrDefault(x => x.order == index + 1).table));
+                    allScripts.Append(GenerateScript(scriptProject.InsertTables
+                        .SingleOrDefault(x => x.Order == index + 1).Table));
                 else
                     // ReSharper disable once PossibleNullReferenceException
                     allScripts.Append(("\n").PadRight(60, '-') + "\n" +
-                                      GenerateScript(scriptProject.insert_table
-                                          .SingleOrDefault(x => x.order == index + 1).table));
+                                      GenerateScript(scriptProject.InsertTables
+                                          .SingleOrDefault(x => x.Order == index + 1).Table));
             }
 
             new ScriptVisualizationForm(allScripts.ToString()).Show();
@@ -884,16 +929,16 @@ namespace Project_SQLBuilder.Forms
             var pId = GetCurrentProjectId();
 
             var context = new Entities();
-            var scriptProject = context.project.SingleOrDefault(x => x.id == pId);
+            var scriptProject = context.Projects.SingleOrDefault(x => x.Id == pId);
 
-            if (scriptProject == null || scriptProject.insert_table.Count == 0)
+            if (scriptProject == null || scriptProject.InsertTables.Count == 0)
             {
                 lblSaveState.BackColor = Color.Red;
                 lblStatusText.Text = @"Projeto não selecionado ou sem tabelas.";
                 return;
             }
 
-            var path = "C:\\SQLBuilder\\" + scriptProject.name + "\\";
+            var path = "C:\\SQLBuilder\\" + scriptProject.Name + "\\";
 
             Directory.CreateDirectory(path);
             if (Directory.EnumerateFiles(path).Count() != 0)
@@ -913,20 +958,21 @@ namespace Project_SQLBuilder.Forms
                     file.MoveTo(Path.Combine(path + "\\old", file.Name));
             }
 
-            for (var index = 0; index < scriptProject.insert_table.Count; index++)
+            for (var index = 0; index < scriptProject.InsertTables.Count; index++)
             {
                 var order = index + 1;
                 // ReSharper disable once PossibleNullReferenceException
                 var filename = order + ". " +
-                               scriptProject.insert_table.SingleOrDefault(x => x.order == index + 1).table + ".sql";
+                               scriptProject.InsertTables.SingleOrDefault(x => x.Order == index + 1).Table + ".sql";
                 var newScript =
                     // ReSharper disable once PossibleNullReferenceException
-                    GenerateScript(scriptProject.insert_table.SingleOrDefault(x => x.order == order).table);
+                    GenerateScript(scriptProject.InsertTables.SingleOrDefault(x => x.Order == order).Table);
 
                 File.WriteAllText(path + filename, newScript);
             }
 
             lblStatusText.Text = @"Scripts salvos em '" + path + @"'.";
+            lblSaveState.BackColor = Color.Green;
         }
 
         //Actual Script Generation process.
@@ -937,7 +983,7 @@ namespace Project_SQLBuilder.Forms
 
             var context = new Entities();
             var scriptTable =
-                context.insert_table.SingleOrDefault(x => x.table == tableToGenerate && x.fk_project == pId);
+                context.InsertTables.SingleOrDefault(x => x.Table == tableToGenerate && x.FkProject == pId);
 
             if (scriptTable == null)
             {
@@ -946,87 +992,87 @@ namespace Project_SQLBuilder.Forms
 
             var script = new StringBuilder();
 
-            foreach (custom_field customField in scriptTable.custom_field)
+            foreach (CustomField customField in scriptTable.CustomFields)
             {
-                script.Append("ALTER TABLE " + tableToGenerate + " ADD " + customField.column + " " + customField.columntype);
-                if (string.IsNullOrEmpty(customField.default_value))
+                script.Append("ALTER TABLE " + tableToGenerate + " ADD " + customField.Column + " " + customField.Columntype);
+                if (string.IsNullOrEmpty(customField.DefaultValue))
                 {
                     script.Append(";");
                     continue;
                 }
-                script.Append(" default '" + customField.default_value + "';\n\n");
+                script.Append(" default '" + customField.DefaultValue + "';\n\n");
             }
 
-            script.Append(scriptTable.insert_comand);
-            script.Append("\n\n" + "INSERT INTO " + scriptTable.table + " (");
+            script.Append(scriptTable.InsertComand);
+            script.Append("\n\n" + "INSERT INTO " + scriptTable.Table + " (");
 
             //Insert value columns.
-            for (var index = 0; index < scriptTable.select_field.Count; index++)
+            for (var index = 0; index < scriptTable.SelectFields.Count; index++)
             {
-                if (index != scriptTable.select_field.Count - 1)
-                    script.Append(scriptTable.select_field.ElementAt(index).column + ", ");
+                if (index != scriptTable.SelectFields.Count - 1)
+                    script.Append(scriptTable.SelectFields.ElementAt(index).Column + ", ");
                 else
-                    script.Append(scriptTable.select_field.ElementAt(index).column + ")");
+                    script.Append(scriptTable.SelectFields.ElementAt(index).Column + ")");
             }
 
             script.Append("\nSELECT\n");
 
             // ReSharper disable once SuggestVarOrType_SimpleTypes
             // Resharper is anal as fuck and should die (jk). Inserts every select field in a new line.
-            for (var index = 0; index < scriptTable.select_field.Count; index++)
+            for (var index = 0; index < scriptTable.SelectFields.Count; index++)
             {
                 string selectfield;
 
-                if (index != scriptTable.select_field.Count - 1)
+                if (index != scriptTable.SelectFields.Count - 1)
                 {
-                    if (scriptTable.select_field.ElementAt(index).default_value == "" &&
-                        scriptTable.select_field.ElementAt(index).selected_field != "")
+                    if (scriptTable.SelectFields.ElementAt(index).DefaultValue == "" &&
+                        scriptTable.SelectFields.ElementAt(index).SelectedField != "")
                         selectfield =
-                            "\n" + scriptTable.select_field.ElementAt(index).selected_field.PadRight(40, ' ') + "AS " +
-                            scriptTable.select_field.ElementAt(index).column + ",";
+                            "\n" + scriptTable.SelectFields.ElementAt(index).SelectedField.PadRight(40, ' ') + "AS " +
+                            scriptTable.SelectFields.ElementAt(index).Column + ",";
 
-                    else if (scriptTable.select_field.ElementAt(index).default_value != "" &&
-                             scriptTable.select_field.ElementAt(index).selected_field != "")
+                    else if (scriptTable.SelectFields.ElementAt(index).DefaultValue != "" &&
+                             scriptTable.SelectFields.ElementAt(index).SelectedField != "")
                         selectfield =
-                            "\n" + ("NULLIF(" + scriptTable.select_field.ElementAt(index).selected_field + ", " +
-                                    scriptTable.select_field.ElementAt(index).default_value + ")").PadRight(40, ' ') +
-                            "AS " + scriptTable.select_field.ElementAt(index).column + ",";
+                            "\n" + ("NULLIF(" + scriptTable.SelectFields.ElementAt(index).SelectedField + ", '" +
+                                    scriptTable.SelectFields.ElementAt(index).DefaultValue + "')").PadRight(40, ' ') +
+                            "AS " + scriptTable.SelectFields.ElementAt(index).Column + ",";
 
-                    else if (scriptTable.select_field.ElementAt(index).default_value != "" &&
-                             scriptTable.select_field.ElementAt(index).selected_field == "")
-                        selectfield = "\n" + scriptTable.select_field.ElementAt(index).default_value.PadRight(40, ' ') +
-                                      "AS " + scriptTable.select_field.ElementAt(index).column + ",";
+                    else if (scriptTable.SelectFields.ElementAt(index).DefaultValue != "" &&
+                             scriptTable.SelectFields.ElementAt(index).SelectedField == "")
+                        selectfield = "\n" + scriptTable.SelectFields.ElementAt(index).DefaultValue.PadRight(40, ' ') +
+                                      "AS " + scriptTable.SelectFields.ElementAt(index).Column + ",";
                     else
                         selectfield = "\n" + "NULL".PadRight(40, ' ') + "AS " +
-                                      scriptTable.select_field.ElementAt(index).column + ",";
+                                      scriptTable.SelectFields.ElementAt(index).Column + ",";
                 }
                 else
                 {
-                    if (scriptTable.select_field.ElementAt(index).default_value == "" &&
-                        scriptTable.select_field.ElementAt(index).selected_field != "")
+                    if (scriptTable.SelectFields.ElementAt(index).DefaultValue == "" &&
+                        scriptTable.SelectFields.ElementAt(index).SelectedField != "")
                         selectfield =
-                            "\n" + scriptTable.select_field.ElementAt(index).selected_field.PadRight(40, ' ') + "AS " +
-                            scriptTable.select_field.ElementAt(index).column;
+                            "\n" + scriptTable.SelectFields.ElementAt(index).SelectedField.PadRight(40, ' ') + "AS " +
+                            scriptTable.SelectFields.ElementAt(index).Column;
 
-                    else if (scriptTable.select_field.ElementAt(index).default_value != "" &&
-                             scriptTable.select_field.ElementAt(index).selected_field != "")
+                    else if (scriptTable.SelectFields.ElementAt(index).DefaultValue != "" &&
+                             scriptTable.SelectFields.ElementAt(index).SelectedField != "")
                         selectfield =
-                            "\n" + ("NULLIF(" + scriptTable.select_field.ElementAt(index).selected_field + ", " +
-                                    scriptTable.select_field.ElementAt(index).default_value + ")").PadRight(40, ' ') +
-                            "AS " + scriptTable.select_field.ElementAt(index).column;
+                            "\n" + ("NULLIF(" + scriptTable.SelectFields.ElementAt(index).SelectedField + ", " +
+                                    scriptTable.SelectFields.ElementAt(index).DefaultValue + ")").PadRight(40, ' ') +
+                            "AS " + scriptTable.SelectFields.ElementAt(index).Column;
 
-                    else if (scriptTable.select_field.ElementAt(index).default_value != "" &&
-                             scriptTable.select_field.ElementAt(index).selected_field == "")
-                        selectfield = "\n" + scriptTable.select_field.ElementAt(index).default_value.PadRight(40, ' ') +
-                                      "AS " + scriptTable.select_field.ElementAt(index).column;
+                    else if (scriptTable.SelectFields.ElementAt(index).DefaultValue != "" &&
+                             scriptTable.SelectFields.ElementAt(index).SelectedField == "")
+                        selectfield = "\n" + scriptTable.SelectFields.ElementAt(index).DefaultValue.PadRight(40, ' ') +
+                                      "AS " + scriptTable.SelectFields.ElementAt(index).Column;
                     else
                         selectfield = "\n" + "NULL".PadRight(40, ' ') + "AS " +
-                                      scriptTable.select_field.ElementAt(index).column;
+                                      scriptTable.SelectFields.ElementAt(index).Column;
                 }
                 script.Append(selectfield);
             }
 
-            script.Append("\n\n" + lblFrom.Text + " " + scriptTable.from_comand);
+            script.Append("\n\n" + lblFrom.Text + " " + scriptTable.FromComand);
 
             return script.ToString();
         }

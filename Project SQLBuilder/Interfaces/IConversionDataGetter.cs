@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
+using SQLBuilderModel;
 
 namespace Project_SQLBuilder.Interfaces
 {
@@ -16,6 +17,6 @@ namespace Project_SQLBuilder.Interfaces
 
         void SetConnectionString();
         DataTable SelectTables();
-        DataTable SelectColumns(string table, IQueryable<custom_field> customField);
+        DataTable SelectColumns(string table, IQueryable<CustomField> customField);
     }
 }

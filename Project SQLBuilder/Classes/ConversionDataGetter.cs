@@ -3,10 +3,11 @@ using System.Data;
 using System.Data.Odbc;
 using System.Linq;
 using System.Windows.Forms;
-using Devart.Data.PostgreSql;
 using NDbfReader;
+using Npgsql;
 using Oracle.DataAccess.Client;
 using Project_SQLBuilder.Interfaces;
+using SQLBuilderModel;
 
 namespace Project_SQLBuilder.Classes
 {
@@ -65,7 +66,7 @@ namespace Project_SQLBuilder.Classes
             }
         }
 
-        public DataTable SelectColumns(string table, IQueryable<custom_field> customField)
+        public DataTable SelectColumns(string table, IQueryable<CustomField> customField)
         {
             try
             {
@@ -83,9 +84,9 @@ namespace Project_SQLBuilder.Classes
 
                     if (customField != null)
                     {
-                        foreach (custom_field field in customField)
+                        foreach (CustomField field in customField)
                         {
-                            ds.Rows.Add(null, field.default_value, "AS", field.column, field.columntype);
+                            ds.Rows.Add(null, field.DefaultValue, "AS", field.Column, field.Columntype);
                         }
                     }
 
@@ -136,14 +137,14 @@ namespace Project_SQLBuilder.Classes
         {
             try
             {
-                using (var con = new PgSqlConnection(ConnectionString))
+                using (var con = new NpgsqlConnection(ConnectionString))
                 {
-                    var cmd = new PgSqlCommand(
+                    var cmd = new NpgsqlCommand(
                         "select upper(tablename) as colTable from pg_catalog.pg_tables where schemaname = '" + Schema +
                         "';",
                         con);
 
-                    var oda = new PgSqlDataAdapter(cmd);
+                    var oda = new NpgsqlDataAdapter(cmd);
 
                     var ds = new DataTable();
 
@@ -160,18 +161,18 @@ namespace Project_SQLBuilder.Classes
             }
         }
 
-        public DataTable SelectColumns(string table, IQueryable<custom_field> customField)
+        public DataTable SelectColumns(string table, IQueryable<CustomField> customField)
         {
             try
             {
-                using (var con = new PgSqlConnection(ConnectionString))
+                using (var con = new NpgsqlConnection(ConnectionString))
                 {
-                    var cmd = new PgSqlCommand(
+                    var cmd = new NpgsqlCommand(
                         "select null as colNullValue,  upper(column_default) as colDefaultValue, " +
                         "'AS' as colAs,  upper(column_name) as colColumn,  upper(data_type) as colColumnType from information_schema.COLUMNS " +
                         "where table_name = '" + table.ToLower() + "' and table_schema = '" + Schema + "'", con);
 
-                    var oda = new PgSqlDataAdapter(cmd);
+                    var oda = new NpgsqlDataAdapter(cmd);
 
                     var ds = new DataTable();
 
@@ -179,9 +180,9 @@ namespace Project_SQLBuilder.Classes
 
                     if (customField != null)
                     {
-                        foreach (custom_field field in customField)
+                        foreach (CustomField field in customField)
                         {
-                            ds.Rows.Add(null, field.default_value, "AS", field.column, field.columntype);
+                            ds.Rows.Add(null, field.DefaultValue, "AS", field.Column, field.Columntype);
                         }
                     }
 
@@ -253,7 +254,7 @@ namespace Project_SQLBuilder.Classes
             }
         }
 
-        public DataTable SelectColumns(string table, IQueryable<custom_field> customField)
+        public DataTable SelectColumns(string table, IQueryable<CustomField> customField)
         {
             try
             {

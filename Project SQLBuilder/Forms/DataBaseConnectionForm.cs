@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using SQLBuilderModel;
 
 namespace Project_SQLBuilder.Forms
 {
@@ -26,6 +27,28 @@ namespace Project_SQLBuilder.Forms
                 txbOrigSchema.Text = mainForm.OriginConn.Schema;
                 txbOrigUser.Text = mainForm.OriginConn.User;
                 txbOrigPass.Text = mainForm.OriginConn.Password;
+
+                switch (mainForm.OriginConn.Type)
+                {
+                    case "Oracle":
+                        cmbOrigDbType.SelectedIndex = 0;
+                        break;
+                    case "Postgres":
+                        cmbOrigDbType.SelectedIndex = 1;
+                        break;
+                    case "DBF":
+                        cmbOrigDbType.SelectedIndex = 2;
+                        break;
+                }
+                switch (mainForm.DestinyConn.Type)
+                {
+                    case "Oracle":
+                        cmbDestDbType.SelectedIndex = 0;
+                        break;
+                    case "Postgres":
+                        cmbDestDbType.SelectedIndex = 1;
+                        break;
+                }
             }
 
             if (mainForm.DestinyConn != null)
@@ -42,10 +65,13 @@ namespace Project_SQLBuilder.Forms
         #region Basic form functionality.
 
         #region Screen move util
+        // ReSharper disable once InconsistentNaming
         public const int WM_NCLBUTTONDOWN = 0xA1;
+        // ReSharper disable once InconsistentNaming
         public const int HT_CAPTION = 0X2;
 
         [DllImport("user32.dll")]
+        // ReSharper disable once InconsistentNaming
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -122,7 +148,7 @@ namespace Project_SQLBuilder.Forms
                 case 2:
                     txbOrigHost.Enabled = true;
                     lblOrigHost.ForeColor = Color.White;
-                    lblOrigHost.Text = "Pasta:";
+                    lblOrigHost.Text = @"Pasta:";
                     txbOrigPort.Enabled = false;
                     lblOrigPort.ForeColor = Color.DimGray;
                     txbOrigDatabase.Enabled = false;
@@ -181,22 +207,22 @@ namespace Project_SQLBuilder.Forms
             var pId = MainForm.GetCurrentProjectId();
 
             var context = new Entities();
-            var project = context.project.SingleOrDefault(x => x.id == pId);
+            var project = context.Projects.SingleOrDefault(x => x.Id == pId);
 
             if (project == null) return;
 
-            txbOrigHost.Text = project.origin_host;
-            txbOrigPort.Text = project.origin_port;
-            txbOrigDatabase.Text = project.origin_db;
-            txbOrigSchema.Text = project.origin_schema;
-            txbOrigUser.Text = project.origin_user;
-            txbDestHost.Text = project.destiny_host;
-            txbDestPort.Text = project.destiny_port;
-            txbDestDatabase.Text = project.destiny_db;
-            txbDestSchema.Text = project.destiny_schema;
-            txbDestUser.Text = project.destiny_user;
+            txbOrigHost.Text = project.OriginHost;
+            txbOrigPort.Text = project.OriginPort;
+            txbOrigDatabase.Text = project.OriginDb;
+            txbOrigSchema.Text = project.OriginSchema;
+            txbOrigUser.Text = project.OriginUser;
+            txbDestHost.Text = project.DestinyHost;
+            txbDestPort.Text = project.DestinyPort;
+            txbDestDatabase.Text = project.DestinyDb;
+            txbDestSchema.Text = project.DestinySchema;
+            txbDestUser.Text = project.DestinyUser;
 
-            switch (project.origin_db_type)
+            switch (project.OriginDbType)
             {
                 case "Oracle":
                     cmbOrigDbType.SelectedIndex = 0;
@@ -204,9 +230,12 @@ namespace Project_SQLBuilder.Forms
                 case "Postgres":
                     cmbOrigDbType.SelectedIndex = 1;
                     break;
+                case "DBF":
+                    cmbOrigDbType.SelectedIndex = 2;
+                    break;
             }
 
-            switch (project.destiny_db_type)
+            switch (project.DestinyDbType)
             {
                 case "Oracle":
                     cmbDestDbType.SelectedIndex = 0;
@@ -222,12 +251,14 @@ namespace Project_SQLBuilder.Forms
         {
             if (cmbOrigDbType.SelectedIndex == -1) return;
             MainForm.SetOriginConnection(new ConversionDataFactory(txbOrigHost.Text, txbOrigPort.Text, txbOrigDatabase.Text, txbOrigUser.Text, txbOrigPass.Text, txbOrigSchema.Text).GetConversionDataGetter(cmbOrigDbType.Text));
+            MainForm.lblStatusText.Text = @"Conectado a base origem.";
         }
 
         private void lblConnectDestiny_Click(object sender, EventArgs e)
         {
             if (cmbDestDbType.SelectedIndex == -1) return;
             MainForm.SetDestinyConnection(new ConversionDataFactory(txbDestHost.Text, txbDestPort.Text, txbDestDatabase.Text, txbDestUser.Text, txbDestPass.Text, txbDestSchema.Text).GetConversionDataGetter(cmbDestDbType.Text));
+            MainForm.lblStatusText.Text = @"Conectado a base destino.";
         }
 
     }

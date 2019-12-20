@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SQLBuilderModel" Alias="Self" d4p1:ViewGeneration="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:devart="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" annotation:UseStrongSpatialTypes="false" xmlns:d4p1="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" ed:Guid="2136b9ff-2aec-495d-9ff2-bfd6e12ad5af">
+    <EntitySet Name="Projects" EntityType="SQLBuilderModel.Project" />
+    <EntitySet Name="InsertTables" EntityType="SQLBuilderModel.InsertTable" />
+    <EntitySet Name="SelectFields" EntityType="SQLBuilderModel.SelectField" />
+    <EntitySet Name="CustomFields" EntityType="SQLBuilderModel.CustomField" />
+    <AssociationSet Name="insert_table_project_id_fkSet" Association="SQLBuilderModel.insert_table_project_id_fk">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="InsertTables" EntitySet="InsertTables" />
+    </AssociationSet>
+    <AssociationSet Name="selectfield_insert_table_fkSet" Association="SQLBuilderModel.selectfield_insert_table_fk">
+      <End Role="InsertTable" EntitySet="InsertTables" />
+      <End Role="SelectFields" EntitySet="SelectFields" />
+    </AssociationSet>
+    <AssociationSet Name="custom_field_insert_table_fkSet" Association="SQLBuilderModel.custom_field_insert_table_fk">
+      <End Role="InsertTable" EntitySet="InsertTables" />
+      <End Role="CustomFields" EntitySet="CustomFields" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Project" ed:Guid="80bd549f-609d-437a-8f67-d14703129019">
+    <Documentation>
+      <Summary>projetos de conversÃ£o</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ed:ValidateRequired="true" ed:Guid="0edfdd80-dbc4-4143-9576-63f405d0f005" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" ed:ValidateMaxLength="30" ed:ValidateRequired="true" ed:Guid="ecc5a306-4e30-4080-ae5d-24ec78ec31fe" />
+    <Property Name="DestinyDbType" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="f690bfcc-4aa5-4736-befa-dec75bfa77a6">
+      <Documentation>
+        <Summary>tipo da database destino</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="OriginHost" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="336ec888-f2d3-4587-ba95-5daf929cd629" />
+    <Property Name="OriginPort" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="391f7570-ab7d-463c-97a5-a4428e20c085" />
+    <Property Name="OriginDb" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="d3ff070f-6509-4998-9fe2-ba04bc0f42ec" />
+    <Property Name="OriginSchema" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="e0a6985f-a6ce-4aae-9b77-17f34b62dd34" />
+    <Property Name="OriginUser" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="b38f9bc1-d508-4e51-bf59-0a5868391074" />
+    <Property Name="DestinyHost" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="6b744d75-fd75-463b-9ff1-3b68c9763624" />
+    <Property Name="DestinyPort" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="1f947a25-8179-481a-9f66-79a44d81cd2f" />
+    <Property Name="DestinyDb" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="1aa4c3b3-da4b-4c1c-82c8-0705c1566748" />
+    <Property Name="DestinySchema" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="f429748a-c6b9-4f14-b0fb-483541542949" />
+    <Property Name="DestinyUser" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="f7580278-713c-4375-83fb-141435ddca4d" />
+    <Property Name="OriginDbType" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="50f5bbc3-01c5-466f-b58f-abc9b2b1a6fc" />
+    <NavigationProperty Name="InsertTables" Relationship="SQLBuilderModel.insert_table_project_id_fk" FromRole="Project" ToRole="InsertTables" ed:Guid="65581af7-a467-4a30-b3a6-a04cdb2aeb96" />
+  </EntityType>
+  <EntityType Name="InsertTable" ed:Guid="bbf4a2bc-1dea-43b7-8f12-d0dee10021fb">
+    <Documentation>
+      <Summary>Guarda as tabelas que terÃ£o dados inseridos, por projeto, com ordem.</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ed:ValidateRequired="true" ed:Guid="d6dacd63-ae95-46ca-8d65-20ebc855470f">
+      <Documentation>
+        <Summary>para seguranÃ§a
+</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="FkProject" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="ff289357-22d3-48c7-8027-00b5bc19800c">
+      <Documentation>
+        <Summary>id do projeto</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="Table" Type="String" Nullable="false" Unicode="true" ed:ValidateRequired="true" ed:Guid="cfae4895-895d-49d7-a75f-9e1b86ccea04">
+      <Documentation>
+        <Summary>tabela que terÃ¡ dados inseridos em</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="Order" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="c25f3f4e-b5d9-497d-b8b2-d820df53a29d">
+      <Documentation>
+        <Summary>Ordem da geraÃ§Ã£o de script
+</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="InsertComand" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="d12f79c6-d717-40c2-9037-1e0ecccf79a4" />
+    <Property Name="FromComand" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="201fc338-2d87-4b6d-a136-8dd43c6fd696" />
+    <NavigationProperty Name="Project" Relationship="SQLBuilderModel.insert_table_project_id_fk" FromRole="InsertTables" ToRole="Project" ed:Guid="71b46552-cc90-4b01-b961-93626f9166c2" />
+    <NavigationProperty Name="SelectFields" Relationship="SQLBuilderModel.selectfield_insert_table_fk" FromRole="InsertTable" ToRole="SelectFields" ed:Guid="0b5e9ca3-65d0-4c6a-b8f3-2bc5bbb9b351" />
+    <NavigationProperty Name="CustomFields" Relationship="SQLBuilderModel.custom_field_insert_table_fk" FromRole="InsertTable" ToRole="CustomFields" ed:Guid="973c4491-4d5e-4c5c-a97b-55257f335aaa" />
+  </EntityType>
+  <EntityType Name="SelectField" ed:Guid="503edee5-65e5-49aa-a778-5b1d982f0380">
+    <Documentation>
+      <Summary>contains all select commands for each field in a certain table conversion</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ed:ValidateRequired="true" ed:Guid="5d66416c-72e3-43fb-a0e2-ca908ac37037" />
+    <Property Name="FkInsertTable" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="ae81e31d-3467-42f3-aaf2-34d365ac8c2e" />
+    <Property Name="SelectedField" Type="String" Nullable="false" Unicode="true" ed:ValidateRequired="true" ed:Guid="9702292b-d137-49b9-bb8c-2859457da8e9" />
+    <Property Name="Column" Type="String" Nullable="false" Unicode="true" ed:ValidateRequired="true" ed:Guid="2ef57f88-2eb7-4647-9188-0b9168d09831" />
+    <Property Name="DefaultValue" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="a44e6a39-eb98-44a5-8d95-d992d66ee543" />
+    <NavigationProperty Name="InsertTable" Relationship="SQLBuilderModel.selectfield_insert_table_fk" FromRole="SelectFields" ToRole="InsertTable" ed:Guid="dc9b33fa-df25-4b87-a5ed-c12e4a6374b0" />
+  </EntityType>
+  <EntityType Name="CustomField" ed:Guid="40615570-c814-4051-b30e-75a85258b76c">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ed:ValidateRequired="true" ed:Guid="194dd44c-e04c-42a7-89e5-f024f1bfdc53" />
+    <Property Name="FkInsertTable" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="f74566f6-5b40-408a-921a-afbeb41bbe08" />
+    <Property Name="Column" Type="String" Nullable="false" Unicode="true" ed:ValidateRequired="true" ed:Guid="6d263288-d3c0-4cd6-81d3-0b4bda0862c7" />
+    <Property Name="DefaultValue" Type="String" Unicode="true" ed:ValidateRequired="false" ed:Guid="e9bea9d7-1c26-4107-998b-203b1c75add9" />
+    <Property Name="Columntype" Type="String" Nullable="false" Unicode="true" ed:ValidateRequired="true" ed:Guid="6824ffd1-1672-422a-bc5e-e5891413ac0e" />
+    <NavigationProperty Name="InsertTable" Relationship="SQLBuilderModel.custom_field_insert_table_fk" FromRole="CustomFields" ToRole="InsertTable" ed:Guid="6d450b40-c458-49df-8f4c-986a973693a8" />
+  </EntityType>
+  <Association Name="insert_table_project_id_fk" ed:Guid="d5ce5414-b15f-4d1d-a1dc-78e36a4c1d83">
+    <End Role="Project" Type="SQLBuilderModel.Project" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="InsertTables" Type="SQLBuilderModel.InsertTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="InsertTables">
+        <PropertyRef Name="FkProject" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="selectfield_insert_table_fk" ed:Guid="3935e527-b81b-4405-bbf3-68ab44c8f760">
+    <End Role="InsertTable" Type="SQLBuilderModel.InsertTable" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SelectFields" Type="SQLBuilderModel.SelectField" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsertTable">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SelectFields">
+        <PropertyRef Name="FkInsertTable" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="custom_field_insert_table_fk" ed:Guid="430dba41-7939-4041-b4a2-5b98756b7e5f">
+    <End Role="InsertTable" Type="SQLBuilderModel.InsertTable" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CustomFields" Type="SQLBuilderModel.CustomField" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsertTable">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomFields">
+        <PropertyRef Name="FkInsertTable" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -2,13 +2,15 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Project_SQLBuilder
+namespace Project_SQLBuilder.Forms
 {
     public partial class ScriptVisualizationForm : Form
     {
 
         #region Screen move and list editing util
+        // ReSharper disable once InconsistentNaming
         public const int WM_NCLBUTTONDOWN = 0xA1;
+        // ReSharper disable once InconsistentNaming
         public const int HT_CAPTION = 0X2;
 
         [DllImport("user32.dll")]

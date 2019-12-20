@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SQLBuilderModel.Store" Alias="Self" Provider="Devart.Data.PostgreSql" ProviderManifestToken="PostgreSQL, 9.5.4" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:devart="http://devart.com/schemas/edml/StorageSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EntitiesStoreContainer">
+    <EntitySet Name="projects" EntityType="SQLBuilderModel.Store.project" store:Type="Tables" Schema="sqlbuilder" Table="project" />
+    <EntitySet Name="insert_tables" EntityType="SQLBuilderModel.Store.insert_table" store:Type="Tables" Schema="sqlbuilder" Table="insert_table" />
+    <EntitySet Name="select_fields" EntityType="SQLBuilderModel.Store.select_field" store:Type="Tables" Schema="sqlbuilder" Table="select_field" />
+    <EntitySet Name="custom_fields" EntityType="SQLBuilderModel.Store.custom_field" store:Type="Tables" Schema="sqlbuilder" Table="custom_field" />
+    <AssociationSet Name="insert_table_project_id_fk" Association="SQLBuilderModel.Store.insert_table_project_id_fk">
+      <End Role="project" EntitySet="projects" />
+      <End Role="insert_table" EntitySet="insert_tables" />
+    </AssociationSet>
+    <AssociationSet Name="selectfield_insert_table_fk" Association="SQLBuilderModel.Store.selectfield_insert_table_fk">
+      <End Role="insert_table" EntitySet="insert_tables" />
+      <End Role="select_field" EntitySet="select_fields" />
+    </AssociationSet>
+    <AssociationSet Name="custom_field_insert_table_fk" Association="SQLBuilderModel.Store.custom_field_insert_table_fk">
+      <End Role="insert_table" EntitySet="insert_tables" />
+      <End Role="custom_field" EntitySet="custom_fields" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="project">
+    <Documentation>
+      <Summary>projetos de conversÃ£o</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="destiny_db_type" Type="varchar">
+      <Documentation>
+        <Summary>tipo da database destino</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="origin_host" Type="varchar" />
+    <Property Name="origin_port" Type="varchar" />
+    <Property Name="origin_db" Type="varchar" />
+    <Property Name="origin_schema" Type="varchar" />
+    <Property Name="origin_user" Type="varchar" />
+    <Property Name="destiny_host" Type="varchar" />
+    <Property Name="destiny_port" Type="varchar" />
+    <Property Name="destiny_db" Type="varchar" />
+    <Property Name="destiny_schema" Type="varchar" />
+    <Property Name="destiny_user" Type="varchar" />
+    <Property Name="origin_db_type" Type="varchar" />
+  </EntityType>
+  <EntityType Name="insert_table">
+    <Documentation>
+      <Summary>Guarda as tabelas que terÃ£o dados inseridos, por projeto, com ordem.</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>para seguranÃ§a
+</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="fk_project" Type="int" Nullable="false">
+      <Documentation>
+        <Summary>id do projeto</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="table" Type="varchar" Nullable="false">
+      <Documentation>
+        <Summary>tabela que terÃ¡ dados inseridos em</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="order" Type="int" Nullable="false">
+      <Documentation>
+        <Summary>Ordem da geraÃ§Ã£o de script
+</Summary>
+      </Documentation>
+    </Property>
+    <Property Name="insert_comand" Type="varchar" />
+    <Property Name="from_comand" Type="varchar" />
+  </EntityType>
+  <EntityType Name="select_field">
+    <Documentation>
+      <Summary>contains all select commands for each field in a certain table conversion</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fk_insert_table" Type="int" Nullable="false" />
+    <Property Name="selected_field" Type="varchar" Nullable="false" />
+    <Property Name="column" Type="varchar" Nullable="false" />
+    <Property Name="default_value" Type="varchar" />
+  </EntityType>
+  <EntityType Name="custom_field">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fk_insert_table" Type="int" Nullable="false" />
+    <Property Name="column" Type="varchar" Nullable="false" />
+    <Property Name="default_value" Type="varchar" />
+    <Property Name="columntype" Type="varchar" Nullable="false" />
+  </EntityType>
+  <Association Name="insert_table_project_id_fk">
+    <End Role="project" Type="SQLBuilderModel.Store.project" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="insert_table" Type="SQLBuilderModel.Store.insert_table" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="project">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="insert_table">
+        <PropertyRef Name="fk_project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="selectfield_insert_table_fk">
+    <End Role="insert_table" Type="SQLBuilderModel.Store.insert_table" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="select_field" Type="SQLBuilderModel.Store.select_field" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="insert_table">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="select_field">
+        <PropertyRef Name="fk_insert_table" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="custom_field_insert_table_fk">
+    <End Role="insert_table" Type="SQLBuilderModel.Store.insert_table" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="custom_field" Type="SQLBuilderModel.Store.custom_field" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="insert_table">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="custom_field">
+        <PropertyRef Name="fk_insert_table" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
