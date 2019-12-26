@@ -43,19 +43,16 @@ namespace Project_SQLBuilder.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.miniToolStrip = new System.Windows.Forms.MenuStrip();
             this.lblStatusText = new System.Windows.Forms.Label();
             this.lblProgramTitle = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.FormHeader = new System.Windows.Forms.Panel();
-            this.btnMinimize = new System.Windows.Forms.Button();
-            this.btnResize = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
             this.MainMenuToolStrip = new System.Windows.Forms.MenuStrip();
             this.tsmiProject = new System.Windows.Forms.ToolStripMenuItem();
             this.novoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,8 +95,6 @@ namespace Project_SQLBuilder.Forms
             this.olvOrder = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.panelCustomFieldTitleButtons = new System.Windows.Forms.Panel();
             this.lblCustomFields = new System.Windows.Forms.Label();
-            this.lblAddCustomField = new System.Windows.Forms.Label();
-            this.lblRemoveCustomField = new System.Windows.Forms.Label();
             this.olvCustomField = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -114,7 +109,12 @@ namespace Project_SQLBuilder.Forms
             this.lblExploreTablesOrig = new System.Windows.Forms.Label();
             this.Div3 = new System.Windows.Forms.Panel();
             this.Div6 = new System.Windows.Forms.Panel();
+            this.lblAddCustomField = new System.Windows.Forms.Label();
+            this.lblRemoveCustomField = new System.Windows.Forms.Label();
             this.lblCloseOriginTab = new System.Windows.Forms.Label();
+            this.btnMinimize = new System.Windows.Forms.Button();
+            this.btnResize = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.FormHeader.SuspendLayout();
             this.MainMenuToolStrip.SuspendLayout();
             this.panelBottomState.SuspendLayout();
@@ -176,7 +176,7 @@ namespace Project_SQLBuilder.Forms
             this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label4.Location = new System.Drawing.Point(0, 30);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(1047, 2);
+            this.label4.Size = new System.Drawing.Size(1290, 2);
             this.label4.TabIndex = 38;
             this.label4.Text = "label4";
             // 
@@ -203,61 +203,10 @@ namespace Project_SQLBuilder.Forms
             this.FormHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.FormHeader.Location = new System.Drawing.Point(0, 0);
             this.FormHeader.Name = "FormHeader";
-            this.FormHeader.Size = new System.Drawing.Size(1047, 32);
+            this.FormHeader.Size = new System.Drawing.Size(1290, 32);
             this.FormHeader.TabIndex = 0;
             this.FormHeader.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FormHeader_MouseDoubleClick);
             this.FormHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseMove);
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnMinimize.FlatAppearance.BorderSize = 0;
-            this.btnMinimize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnMinimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
-            this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.ForeColor = System.Drawing.Color.White;
-            this.btnMinimize.Image = ((System.Drawing.Image)(resources.GetObject("btnMinimize.Image")));
-            this.btnMinimize.Location = new System.Drawing.Point(960, 0);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(29, 30);
-            this.btnMinimize.TabIndex = 1;
-            this.btnMinimize.UseVisualStyleBackColor = true;
-            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // btnResize
-            // 
-            this.btnResize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnResize.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnResize.FlatAppearance.BorderSize = 0;
-            this.btnResize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnResize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.btnResize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResize.ForeColor = System.Drawing.Color.White;
-            this.btnResize.Image = ((System.Drawing.Image)(resources.GetObject("btnResize.Image")));
-            this.btnResize.Location = new System.Drawing.Point(989, 0);
-            this.btnResize.Name = "btnResize";
-            this.btnResize.Size = new System.Drawing.Size(29, 30);
-            this.btnResize.TabIndex = 40;
-            this.btnResize.UseVisualStyleBackColor = true;
-            this.btnResize.Click += new System.EventHandler(this.btnResize_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-            this.btnClose.Location = new System.Drawing.Point(1018, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(29, 30);
-            this.btnClose.TabIndex = 0;
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // MainMenuToolStrip
             // 
@@ -271,7 +220,7 @@ namespace Project_SQLBuilder.Forms
             this.salvarToolStripMenuItem});
             this.MainMenuToolStrip.Location = new System.Drawing.Point(0, 32);
             this.MainMenuToolStrip.Name = "MainMenuToolStrip";
-            this.MainMenuToolStrip.Size = new System.Drawing.Size(1047, 39);
+            this.MainMenuToolStrip.Size = new System.Drawing.Size(1290, 39);
             this.MainMenuToolStrip.TabIndex = 27;
             this.MainMenuToolStrip.Text = "menuStrip1";
             // 
@@ -358,9 +307,9 @@ namespace Project_SQLBuilder.Forms
             this.panelBottomState.BackColor = System.Drawing.Color.DarkGreen;
             this.panelBottomState.Controls.Add(this.lblStatusText);
             this.panelBottomState.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottomState.Location = new System.Drawing.Point(0, 680);
+            this.panelBottomState.Location = new System.Drawing.Point(0, 785);
             this.panelBottomState.Name = "panelBottomState";
-            this.panelBottomState.Size = new System.Drawing.Size(1047, 20);
+            this.panelBottomState.Size = new System.Drawing.Size(1290, 20);
             this.panelBottomState.TabIndex = 48;
             // 
             // MainPanel
@@ -372,7 +321,7 @@ namespace Project_SQLBuilder.Forms
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 73);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(1047, 597);
+            this.MainPanel.Size = new System.Drawing.Size(1290, 702);
             this.MainPanel.TabIndex = 49;
             // 
             // panelSelectGrid
@@ -388,7 +337,7 @@ namespace Project_SQLBuilder.Forms
             this.panelSelectGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSelectGrid.Location = new System.Drawing.Point(230, 0);
             this.panelSelectGrid.Name = "panelSelectGrid";
-            this.panelSelectGrid.Size = new System.Drawing.Size(587, 597);
+            this.panelSelectGrid.Size = new System.Drawing.Size(830, 702);
             this.panelSelectGrid.TabIndex = 52;
             // 
             // panelSelect
@@ -397,7 +346,7 @@ namespace Project_SQLBuilder.Forms
             this.panelSelect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSelect.Location = new System.Drawing.Point(15, 160);
             this.panelSelect.Name = "panelSelect";
-            this.panelSelect.Size = new System.Drawing.Size(557, 282);
+            this.panelSelect.Size = new System.Drawing.Size(800, 387);
             this.panelSelect.TabIndex = 49;
             // 
             // dgvSelectFields
@@ -411,14 +360,14 @@ namespace Project_SQLBuilder.Forms
             this.dgvSelectFields.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvSelectFields.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dgvSelectFields.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSelectFields.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSelectFields.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSelectFields.ColumnHeadersHeight = 20;
             this.dgvSelectFields.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvSelectFields.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -428,14 +377,14 @@ namespace Project_SQLBuilder.Forms
             this.colColumn,
             this.colColumnType});
             this.dgvSelectFields.Cursor = System.Windows.Forms.Cursors.Default;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSelectFields.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSelectFields.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSelectFields.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSelectFields.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvSelectFields.EnableHeadersVisualStyles = false;
@@ -445,7 +394,7 @@ namespace Project_SQLBuilder.Forms
             this.dgvSelectFields.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvSelectFields.RowHeadersVisible = false;
             this.dgvSelectFields.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvSelectFields.Size = new System.Drawing.Size(557, 282);
+            this.dgvSelectFields.Size = new System.Drawing.Size(800, 387);
             this.dgvSelectFields.TabIndex = 4;
             this.dgvSelectFields.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSelectFields_CellValueChanged);
             this.dgvSelectFields.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgvSelectFields_CurrentCellDirtyStateChanged);
@@ -492,11 +441,11 @@ namespace Project_SQLBuilder.Forms
             // 
             this.colColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colColumn.DataPropertyName = "colColumn";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
-            this.colColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            this.colColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.colColumn.FillWeight = 7.198624F;
             this.colColumn.HeaderText = "COLUNA DESTINO";
             this.colColumn.Name = "colColumn";
@@ -520,9 +469,9 @@ namespace Project_SQLBuilder.Forms
             // Div5
             // 
             this.Div5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Div5.Location = new System.Drawing.Point(15, 442);
+            this.Div5.Location = new System.Drawing.Point(15, 547);
             this.Div5.Name = "Div5";
-            this.Div5.Size = new System.Drawing.Size(557, 10);
+            this.Div5.Size = new System.Drawing.Size(800, 10);
             this.Div5.TabIndex = 52;
             // 
             // panelFrom
@@ -530,9 +479,9 @@ namespace Project_SQLBuilder.Forms
             this.panelFrom.Controls.Add(this.rtbFrom);
             this.panelFrom.Controls.Add(this.lblFrom);
             this.panelFrom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelFrom.Location = new System.Drawing.Point(15, 452);
+            this.panelFrom.Location = new System.Drawing.Point(15, 557);
             this.panelFrom.Name = "panelFrom";
-            this.panelFrom.Size = new System.Drawing.Size(557, 145);
+            this.panelFrom.Size = new System.Drawing.Size(800, 145);
             this.panelFrom.TabIndex = 51;
             // 
             // rtbFrom
@@ -544,7 +493,7 @@ namespace Project_SQLBuilder.Forms
             this.rtbFrom.ForeColor = System.Drawing.Color.White;
             this.rtbFrom.Location = new System.Drawing.Point(0, 23);
             this.rtbFrom.Name = "rtbFrom";
-            this.rtbFrom.Size = new System.Drawing.Size(557, 122);
+            this.rtbFrom.Size = new System.Drawing.Size(800, 122);
             this.rtbFrom.TabIndex = 42;
             this.rtbFrom.Text = "";
             this.rtbFrom.TextChanged += new System.EventHandler(this.rtbFrom_TextChanged);
@@ -557,7 +506,7 @@ namespace Project_SQLBuilder.Forms
             this.lblFrom.ForeColor = System.Drawing.Color.White;
             this.lblFrom.Location = new System.Drawing.Point(0, 0);
             this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(557, 23);
+            this.lblFrom.Size = new System.Drawing.Size(800, 23);
             this.lblFrom.TabIndex = 41;
             this.lblFrom.Text = "FROM";
             // 
@@ -566,7 +515,7 @@ namespace Project_SQLBuilder.Forms
             this.Div4.Dock = System.Windows.Forms.DockStyle.Top;
             this.Div4.Location = new System.Drawing.Point(15, 150);
             this.Div4.Name = "Div4";
-            this.Div4.Size = new System.Drawing.Size(557, 10);
+            this.Div4.Size = new System.Drawing.Size(800, 10);
             this.Div4.TabIndex = 48;
             // 
             // panelInsert
@@ -576,7 +525,7 @@ namespace Project_SQLBuilder.Forms
             this.panelInsert.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelInsert.Location = new System.Drawing.Point(15, 0);
             this.panelInsert.Name = "panelInsert";
-            this.panelInsert.Size = new System.Drawing.Size(557, 150);
+            this.panelInsert.Size = new System.Drawing.Size(800, 150);
             this.panelInsert.TabIndex = 47;
             // 
             // rtbInsert
@@ -588,7 +537,7 @@ namespace Project_SQLBuilder.Forms
             this.rtbInsert.ForeColor = System.Drawing.Color.White;
             this.rtbInsert.Location = new System.Drawing.Point(0, 0);
             this.rtbInsert.Name = "rtbInsert";
-            this.rtbInsert.Size = new System.Drawing.Size(557, 127);
+            this.rtbInsert.Size = new System.Drawing.Size(800, 127);
             this.rtbInsert.TabIndex = 41;
             this.rtbInsert.Text = "";
             this.rtbInsert.TextChanged += new System.EventHandler(this.rtbInsert_TextChanged);
@@ -601,7 +550,7 @@ namespace Project_SQLBuilder.Forms
             this.lblInsert.ForeColor = System.Drawing.Color.White;
             this.lblInsert.Location = new System.Drawing.Point(0, 127);
             this.lblInsert.Name = "lblInsert";
-            this.lblInsert.Size = new System.Drawing.Size(557, 23);
+            this.lblInsert.Size = new System.Drawing.Size(800, 23);
             this.lblInsert.TabIndex = 40;
             this.lblInsert.Text = "INSERT INTO";
             // 
@@ -609,9 +558,9 @@ namespace Project_SQLBuilder.Forms
             // 
             this.Div2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.Div2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Div2.Location = new System.Drawing.Point(572, 0);
+            this.Div2.Location = new System.Drawing.Point(815, 0);
             this.Div2.Name = "Div2";
-            this.Div2.Size = new System.Drawing.Size(15, 597);
+            this.Div2.Size = new System.Drawing.Size(15, 702);
             this.Div2.TabIndex = 44;
             // 
             // Div1
@@ -622,7 +571,7 @@ namespace Project_SQLBuilder.Forms
             this.Div1.Dock = System.Windows.Forms.DockStyle.Left;
             this.Div1.Location = new System.Drawing.Point(0, 0);
             this.Div1.Name = "Div1";
-            this.Div1.Size = new System.Drawing.Size(15, 597);
+            this.Div1.Size = new System.Drawing.Size(15, 702);
             this.Div1.TabIndex = 43;
             // 
             // lblExpandOrigin
@@ -658,9 +607,9 @@ namespace Project_SQLBuilder.Forms
             this.panelRight.Controls.Add(this.olvCustomField);
             this.panelRight.Controls.Add(this.lblExploreTablesDest);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRight.Location = new System.Drawing.Point(817, 0);
+            this.panelRight.Location = new System.Drawing.Point(1060, 0);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(230, 597);
+            this.panelRight.Size = new System.Drawing.Size(230, 702);
             this.panelRight.TabIndex = 51;
             // 
             // dlvDestTables
@@ -684,7 +633,7 @@ namespace Project_SQLBuilder.Forms
             this.dlvDestTables.Name = "dlvDestTables";
             this.dlvDestTables.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.dlvDestTables.ShowGroups = false;
-            this.dlvDestTables.Size = new System.Drawing.Size(230, 174);
+            this.dlvDestTables.Size = new System.Drawing.Size(230, 279);
             this.dlvDestTables.TabIndex = 39;
             this.dlvDestTables.UseCompatibleStateImageBehavior = false;
             this.dlvDestTables.UseExplorerTheme = true;
@@ -709,7 +658,7 @@ namespace Project_SQLBuilder.Forms
             this.lbOrderInsert.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lbOrderInsert.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbOrderInsert.ForeColor = System.Drawing.Color.White;
-            this.lbOrderInsert.Location = new System.Drawing.Point(0, 204);
+            this.lbOrderInsert.Location = new System.Drawing.Point(0, 309);
             this.lbOrderInsert.Name = "lbOrderInsert";
             this.lbOrderInsert.Size = new System.Drawing.Size(230, 30);
             this.lbOrderInsert.TabIndex = 40;
@@ -736,7 +685,7 @@ namespace Project_SQLBuilder.Forms
             this.olvInsertTable.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.olvInsertTable.IsSimpleDragSource = true;
             this.olvInsertTable.IsSimpleDropSink = true;
-            this.olvInsertTable.Location = new System.Drawing.Point(0, 234);
+            this.olvInsertTable.Location = new System.Drawing.Point(0, 339);
             this.olvInsertTable.MultiSelect = false;
             this.olvInsertTable.Name = "olvInsertTable";
             this.olvInsertTable.ShowGroups = false;
@@ -774,7 +723,7 @@ namespace Project_SQLBuilder.Forms
             this.panelCustomFieldTitleButtons.Controls.Add(this.lblAddCustomField);
             this.panelCustomFieldTitleButtons.Controls.Add(this.lblRemoveCustomField);
             this.panelCustomFieldTitleButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelCustomFieldTitleButtons.Location = new System.Drawing.Point(0, 437);
+            this.panelCustomFieldTitleButtons.Location = new System.Drawing.Point(0, 542);
             this.panelCustomFieldTitleButtons.Name = "panelCustomFieldTitleButtons";
             this.panelCustomFieldTitleButtons.Size = new System.Drawing.Size(230, 30);
             this.panelCustomFieldTitleButtons.TabIndex = 42;
@@ -792,30 +741,6 @@ namespace Project_SQLBuilder.Forms
             this.lblCustomFields.Text = "Campos Customizados";
             this.lblCustomFields.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblAddCustomField
-            // 
-            this.lblAddCustomField.BackColor = System.Drawing.Color.SeaGreen;
-            this.lblAddCustomField.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblAddCustomField.ForeColor = System.Drawing.Color.White;
-            this.lblAddCustomField.Image = ((System.Drawing.Image)(resources.GetObject("lblAddCustomField.Image")));
-            this.lblAddCustomField.Location = new System.Drawing.Point(201, 0);
-            this.lblAddCustomField.Name = "lblAddCustomField";
-            this.lblAddCustomField.Size = new System.Drawing.Size(29, 30);
-            this.lblAddCustomField.TabIndex = 47;
-            this.lblAddCustomField.Click += new System.EventHandler(this.lblddCustomField_Click);
-            // 
-            // lblRemoveCustomField
-            // 
-            this.lblRemoveCustomField.BackColor = System.Drawing.Color.SeaGreen;
-            this.lblRemoveCustomField.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblRemoveCustomField.ForeColor = System.Drawing.Color.White;
-            this.lblRemoveCustomField.Image = ((System.Drawing.Image)(resources.GetObject("lblRemoveCustomField.Image")));
-            this.lblRemoveCustomField.Location = new System.Drawing.Point(0, 0);
-            this.lblRemoveCustomField.Name = "lblRemoveCustomField";
-            this.lblRemoveCustomField.Size = new System.Drawing.Size(29, 30);
-            this.lblRemoveCustomField.TabIndex = 49;
-            this.lblRemoveCustomField.Click += new System.EventHandler(this.lblRemoveCustomField_Click);
-            // 
             // olvCustomField
             // 
             this.olvCustomField.AllColumns.Add(this.olvColumn5);
@@ -832,7 +757,7 @@ namespace Project_SQLBuilder.Forms
             this.olvCustomField.ForeColor = System.Drawing.Color.White;
             this.olvCustomField.FullRowSelect = true;
             this.olvCustomField.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.olvCustomField.Location = new System.Drawing.Point(0, 467);
+            this.olvCustomField.Location = new System.Drawing.Point(0, 572);
             this.olvCustomField.Name = "olvCustomField";
             this.olvCustomField.ShowGroups = false;
             this.olvCustomField.ShowItemToolTips = true;
@@ -879,7 +804,7 @@ namespace Project_SQLBuilder.Forms
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(230, 597);
+            this.panelLeft.Size = new System.Drawing.Size(230, 702);
             this.panelLeft.TabIndex = 50;
             // 
             // dlvOrigColumns
@@ -899,12 +824,13 @@ namespace Project_SQLBuilder.Forms
             this.dlvOrigColumns.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.dlvOrigColumns.ForeColor = System.Drawing.Color.White;
             this.dlvOrigColumns.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.dlvOrigColumns.IsSimpleDragSource = true;
             this.dlvOrigColumns.Location = new System.Drawing.Point(0, 251);
             this.dlvOrigColumns.MultiSelect = false;
             this.dlvOrigColumns.Name = "dlvOrigColumns";
             this.dlvOrigColumns.ShowGroups = false;
             this.dlvOrigColumns.ShowItemToolTips = true;
-            this.dlvOrigColumns.Size = new System.Drawing.Size(230, 346);
+            this.dlvOrigColumns.Size = new System.Drawing.Size(230, 451);
             this.dlvOrigColumns.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.dlvOrigColumns.TabIndex = 47;
             this.dlvOrigColumns.UseCompatibleStateImageBehavior = false;
@@ -991,16 +917,40 @@ namespace Project_SQLBuilder.Forms
             this.Div3.Dock = System.Windows.Forms.DockStyle.Top;
             this.Div3.Location = new System.Drawing.Point(0, 71);
             this.Div3.Name = "Div3";
-            this.Div3.Size = new System.Drawing.Size(1047, 2);
+            this.Div3.Size = new System.Drawing.Size(1290, 2);
             this.Div3.TabIndex = 51;
             // 
             // Div6
             // 
             this.Div6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Div6.Location = new System.Drawing.Point(0, 670);
+            this.Div6.Location = new System.Drawing.Point(0, 775);
             this.Div6.Name = "Div6";
-            this.Div6.Size = new System.Drawing.Size(1047, 10);
+            this.Div6.Size = new System.Drawing.Size(1290, 10);
             this.Div6.TabIndex = 53;
+            // 
+            // lblAddCustomField
+            // 
+            this.lblAddCustomField.BackColor = System.Drawing.Color.SeaGreen;
+            this.lblAddCustomField.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblAddCustomField.ForeColor = System.Drawing.Color.White;
+            this.lblAddCustomField.Image = ((System.Drawing.Image)(resources.GetObject("lblAddCustomField.Image")));
+            this.lblAddCustomField.Location = new System.Drawing.Point(201, 0);
+            this.lblAddCustomField.Name = "lblAddCustomField";
+            this.lblAddCustomField.Size = new System.Drawing.Size(29, 30);
+            this.lblAddCustomField.TabIndex = 47;
+            this.lblAddCustomField.Click += new System.EventHandler(this.lblddCustomField_Click);
+            // 
+            // lblRemoveCustomField
+            // 
+            this.lblRemoveCustomField.BackColor = System.Drawing.Color.SeaGreen;
+            this.lblRemoveCustomField.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblRemoveCustomField.ForeColor = System.Drawing.Color.White;
+            this.lblRemoveCustomField.Image = ((System.Drawing.Image)(resources.GetObject("lblRemoveCustomField.Image")));
+            this.lblRemoveCustomField.Location = new System.Drawing.Point(0, 0);
+            this.lblRemoveCustomField.Name = "lblRemoveCustomField";
+            this.lblRemoveCustomField.Size = new System.Drawing.Size(29, 30);
+            this.lblRemoveCustomField.TabIndex = 49;
+            this.lblRemoveCustomField.Click += new System.EventHandler(this.lblRemoveCustomField_Click);
             // 
             // lblCloseOriginTab
             // 
@@ -1012,13 +962,64 @@ namespace Project_SQLBuilder.Forms
             this.lblCloseOriginTab.TabIndex = 48;
             this.lblCloseOriginTab.Click += new System.EventHandler(this.lblCloseOriginTab_Click);
             // 
+            // btnMinimize
+            // 
+            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnMinimize.FlatAppearance.BorderSize = 0;
+            this.btnMinimize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnMinimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
+            this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMinimize.ForeColor = System.Drawing.Color.White;
+            this.btnMinimize.Image = ((System.Drawing.Image)(resources.GetObject("btnMinimize.Image")));
+            this.btnMinimize.Location = new System.Drawing.Point(1203, 0);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(29, 30);
+            this.btnMinimize.TabIndex = 1;
+            this.btnMinimize.UseVisualStyleBackColor = true;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            // 
+            // btnResize
+            // 
+            this.btnResize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnResize.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnResize.FlatAppearance.BorderSize = 0;
+            this.btnResize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnResize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btnResize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResize.ForeColor = System.Drawing.Color.White;
+            this.btnResize.Image = ((System.Drawing.Image)(resources.GetObject("btnResize.Image")));
+            this.btnResize.Location = new System.Drawing.Point(1232, 0);
+            this.btnResize.Name = "btnResize";
+            this.btnResize.Size = new System.Drawing.Size(29, 30);
+            this.btnResize.TabIndex = 40;
+            this.btnResize.UseVisualStyleBackColor = true;
+            this.btnResize.Click += new System.EventHandler(this.btnResize_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
+            this.btnClose.Location = new System.Drawing.Point(1261, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(29, 30);
+            this.btnClose.TabIndex = 0;
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
-            this.ClientSize = new System.Drawing.Size(1047, 700);
+            this.ClientSize = new System.Drawing.Size(1290, 805);
             this.ControlBox = false;
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.Div6);

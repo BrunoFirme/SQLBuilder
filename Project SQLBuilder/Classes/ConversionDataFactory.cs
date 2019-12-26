@@ -14,6 +14,7 @@ namespace Project_SQLBuilder.Classes
         public static string Oracle = "Oracle";
         public static string Postgres = "Postgres";
         public static string Dbf = "DBF";
+        public static string Firebird = "Firebird";
 
         public ConversionDataFactory(string host, string port, string database, string user, string password,
             string schema)
@@ -38,6 +39,11 @@ namespace Project_SQLBuilder.Classes
             else if (type.Equals(Postgres))
             {
                 newCdGetter = new PostgresConversionDataGetter(host, port, database, user, password, schema);
+                newCdGetter.SetConnectionString();
+            }
+            else if (type.Equals(Firebird))
+            {
+                newCdGetter = new FirebirdConversionDataGetter(host, port, database, user, password, schema);
                 newCdGetter.SetConnectionString();
             }
             else if (type.Equals(Dbf))

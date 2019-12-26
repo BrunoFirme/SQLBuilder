@@ -36,8 +36,11 @@ namespace Project_SQLBuilder.Forms
                     case "Postgres":
                         cmbOrigDbType.SelectedIndex = 1;
                         break;
-                    case "DBF":
+                    case "Firebird":
                         cmbOrigDbType.SelectedIndex = 2;
+                        break;
+                    case "DBF":
+                        cmbOrigDbType.SelectedIndex = 3;
                         break;
                 }
                 switch (mainForm.DestinyConn.Type)
@@ -47,6 +50,9 @@ namespace Project_SQLBuilder.Forms
                         break;
                     case "Postgres":
                         cmbDestDbType.SelectedIndex = 1;
+                        break;
+                    case "Firebird":
+                        cmbOrigDbType.SelectedIndex = 2;
                         break;
                 }
             }
@@ -123,6 +129,7 @@ namespace Project_SQLBuilder.Forms
                     lblOrigPort.ForeColor = Color.DimGray;
                     txbOrigDatabase.Enabled = false;
                     lblOrigDatabase.ForeColor = Color.DimGray;
+                    lblOrigDatabase.Text = @"Banco:";
                     txbOrigUser.Enabled = true;
                     lblOrigUser.ForeColor = Color.White;
                     txbOrigPass.Enabled = true;
@@ -138,6 +145,7 @@ namespace Project_SQLBuilder.Forms
                     lblOrigPort.ForeColor = Color.White;
                     txbOrigDatabase.Enabled = true;
                     lblOrigDatabase.ForeColor = Color.White;
+                    lblOrigDatabase.Text = @"Banco:";
                     txbOrigUser.Enabled = true;
                     lblOrigUser.ForeColor = Color.White;
                     txbOrigPass.Enabled = true;
@@ -148,11 +156,28 @@ namespace Project_SQLBuilder.Forms
                 case 2:
                     txbOrigHost.Enabled = true;
                     lblOrigHost.ForeColor = Color.White;
+                    lblOrigHost.Text = @"Host:";
+                    txbOrigPort.Enabled = true;
+                    lblOrigPort.ForeColor = Color.White;
+                    txbOrigDatabase.Enabled = true;
+                    lblOrigDatabase.ForeColor = Color.White;
+                    lblOrigDatabase.Text = @"Caminho:";
+                    txbOrigUser.Enabled = true;
+                    lblOrigUser.ForeColor = Color.White;
+                    txbOrigPass.Enabled = true;
+                    lblOrigPass.ForeColor = Color.White;
+                    txbOrigSchema.Enabled = false;
+                    lblOrigSchema.ForeColor = Color.DimGray;
+                    break;
+                case 3:
+                    txbOrigHost.Enabled = true;
+                    lblOrigHost.ForeColor = Color.White;
                     lblOrigHost.Text = @"Pasta:";
                     txbOrigPort.Enabled = false;
                     lblOrigPort.ForeColor = Color.DimGray;
                     txbOrigDatabase.Enabled = false;
                     lblOrigDatabase.ForeColor = Color.DimGray;
+                    lblOrigDatabase.Text = @"Banco:";
                     txbOrigUser.Enabled = false;
                     lblOrigUser.ForeColor = Color.DimGray;
                     txbOrigPass.Enabled = false;
@@ -174,6 +199,7 @@ namespace Project_SQLBuilder.Forms
                     lblDestPort.ForeColor = Color.DimGray;
                     txbDestDatabase.Enabled = false;
                     lblDestDatabase.ForeColor = Color.DimGray;
+                    lblDestDatabase.Text = @"Banco:";
                     txbDestUser.Enabled = true;
                     lblDestUser.ForeColor = Color.White;
                     txbDestPass.Enabled = true;
@@ -188,12 +214,28 @@ namespace Project_SQLBuilder.Forms
                     lblDestPort.ForeColor = Color.White;
                     txbDestDatabase.Enabled = true;
                     lblDestDatabase.ForeColor = Color.White;
+                    lblDestDatabase.Text = @"Banco:";
                     txbDestUser.Enabled = true;
                     lblDestUser.ForeColor = Color.White;
                     txbDestPass.Enabled = true;
                     lblDestPass.ForeColor = Color.White;
                     txbDestSchema.Enabled = true;
                     lblDestSchema.ForeColor = Color.White;
+                    break;
+                case 2:
+                    txbDestHost.Enabled = true;
+                    lblDestHost.ForeColor = Color.White;
+                    txbDestPort.Enabled = true;
+                    lblDestPort.ForeColor = Color.White;
+                    txbDestDatabase.Enabled = true;
+                    lblDestDatabase.ForeColor = Color.White;
+                    lblDestDatabase.Text = @"Caminho:";
+                    txbDestUser.Enabled = true;
+                    lblDestUser.ForeColor = Color.White;
+                    txbDestPass.Enabled = true;
+                    lblDestPass.ForeColor = Color.White;
+                    txbDestSchema.Enabled = false;
+                    lblDestSchema.ForeColor = Color.DimGray;
                     break;
             }
         }
@@ -230,8 +272,11 @@ namespace Project_SQLBuilder.Forms
                 case "Postgres":
                     cmbOrigDbType.SelectedIndex = 1;
                     break;
-                case "DBF":
+                case "Firebird":
                     cmbOrigDbType.SelectedIndex = 2;
+                    break;
+                case "DBF":
+                    cmbOrigDbType.SelectedIndex = 3;
                     break;
             }
 
@@ -242,6 +287,9 @@ namespace Project_SQLBuilder.Forms
                     break;
                 case "Postgres":
                     cmbDestDbType.SelectedIndex = 1;
+                    break;
+                case "Firebird":
+                    cmbOrigDbType.SelectedIndex = 2;
                     break;
             }
         }
