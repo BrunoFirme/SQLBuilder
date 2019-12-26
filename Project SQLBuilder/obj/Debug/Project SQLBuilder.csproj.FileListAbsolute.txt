@@ -44,3 +44,4 @@ C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBui
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Debug\DataBaseModel.csdl
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\bin\Debug\DataBaseModel.msl
 C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project_SQLBuilder.Forms.ScriptVisualizationForm.resources
+C:\Users\bruno.crema\Desktop\Bruno\1. Projetos\Project-SQLBuilder\Project SQLBuilder\obj\Debug\Project SQLBuilder.exe.licenses

@@ -22,6 +22,9 @@ namespace Project_SQLBuilder.Forms
         //Used for script generation.
         private string _currentTable = "";
 
+        //Used to check if anything has changed in the script so the user doesnt leave without unnintentionaly not saving.
+        private bool _hasScriptChange;
+
         //Connections set in the connection form.
         public DataBaseConnectionForm ConfigForm;
 
@@ -32,9 +35,12 @@ namespace Project_SQLBuilder.Forms
         public MainForm()
         {
             InitializeComponent();
+            _hasScriptChange = false;
             PopulateProjectsCmb();
             lblStatusText.Text = "";
+            panelBottomState.BackColor = Color.FromArgb(45,45,45);
             RetractOriginTab();
+
         }
 
         #region Basic form functionality.
@@ -65,40 +71,52 @@ namespace Project_SQLBuilder.Forms
             else if (WindowState == FormWindowState.Maximized) WindowState = FormWindowState.Normal;
         }
 
-        private void Div1_Click(object sender, EventArgs e)
-        {
-            if (panelLeft.Width == 230)
-            {
-                RetractOriginTab();
-            }
-            else
-            {
-                ExpandOriginTab();
-            }
-        }
-
         public void ExpandOriginTab()
         {
             panelLeft.Width = 230;
-            Div1.Width = 10;
             lblOrigPanelIndicator.BackColor = Color.Transparent;
+            lblExpandOrigin.BackColor = Color.Transparent;
         }
 
         public void RetractOriginTab()
         {
             panelLeft.Width = 0;
-            Div1.Width = 15;
             lblOrigPanelIndicator.BackColor = Color.SteelBlue;
         }
 
-        private void Div1_MouseEnter(object sender, EventArgs e)
+        private void lblCloseOriginTab_Click(object sender, EventArgs e)
         {
-            Div1.BackColor = Color.SteelBlue;
+            RetractOriginTab();
         }
 
-        private void Div1_MouseLeave(object sender, EventArgs e)
+        private void lblExpandOrigin_Click(object sender, EventArgs e)
         {
-            Div1.BackColor = Color.Transparent;
+            if (panelLeft.Width == 0) ExpandOriginTab();
+        }
+
+        private void lblExpandOrigin_MouseEnter(object sender, EventArgs e)
+        {
+            if (panelLeft.Width == 0) lblExpandOrigin.BackColor = Color.SteelBlue;
+            else
+            {
+                lblExpandOrigin.BackColor = Color.Transparent;
+                lblOrigPanelIndicator.BackColor = Color.Transparent;
+            }
+            
+        }
+
+        private void lblExpandOrigin_MouseLeave(object sender, EventArgs e)
+        {
+            if (panelLeft.Width == 0)
+            {
+                lblOrigPanelIndicator.BackColor = Color.SteelBlue;
+                lblExpandOrigin.BackColor = Color.Transparent;
+            }
+            else
+            {
+                lblExpandOrigin.BackColor = Color.Transparent;
+                lblOrigPanelIndicator.BackColor = Color.Transparent;
+            }
         }
 
         private void FormHeader_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -108,6 +126,14 @@ namespace Project_SQLBuilder.Forms
                 WindowState = FormWindowState.Maximized;
             }
             else if (WindowState == FormWindowState.Maximized) WindowState = FormWindowState.Normal;
+        }
+
+        private void dgvSelectFields_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgvSelectFields.IsCurrentCellDirty)
+            {
+                dgvSelectFields.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
         }
 
         //Open connection form.
@@ -130,21 +156,25 @@ namespace Project_SQLBuilder.Forms
         {
             if (_isTableSwap) return;
             panelBottomState.BackColor = Color.DarkOrange;
-            lblStatusText.Text = "Alterado...";
+            lblStatusText.Text = @"Alterado...";
+            _hasScriptChange = true;
+
         }
 
         private void rtbFrom_TextChanged(object sender, EventArgs e)
         {
             if (_isTableSwap) return;
             panelBottomState.BackColor = Color.DarkOrange;
-            lblStatusText.Text = "Alterado...";
+            lblStatusText.Text = @"Alterado...";
+            _hasScriptChange = true;
         }
 
         private void dgvSelectFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (_isTableSwap) return;
             panelBottomState.BackColor = Color.DarkOrange;
-            lblStatusText.Text = "Alterado...";
+            lblStatusText.Text = @"Alterado...";
+            _hasScriptChange = true;
         }
 
         #endregion
@@ -180,6 +210,13 @@ namespace Project_SQLBuilder.Forms
         private void dlvDestTables_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (dlvDestTables.SelectedItem == null) return;
+
+            if (_hasScriptChange)
+            {
+                AlertUnsavedChanges();
+                return;
+            }
+
             _currentTable = dlvDestTables.SelectedItem.Text;
             PopulateSelectField();
         }
@@ -188,6 +225,13 @@ namespace Project_SQLBuilder.Forms
         private void olvInsertTable_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (olvInsertTable.SelectedItem == null) return;
+
+            if (_hasScriptChange)
+            {
+                AlertUnsavedChanges();
+                return;
+            }
+
             _currentTable = olvInsertTable.SelectedItem.Text;
             PopulateSelectField();
         }
@@ -206,6 +250,9 @@ namespace Project_SQLBuilder.Forms
                 return;
             }
             if (tscbProjects.SelectedIndex == -1) return;
+
+            //Avoid incorrect color painting of saving indicator. This parameter for the process of table change. 
+            _isTableSwap = true;
 
             CleanSelectField();
 
@@ -230,13 +277,15 @@ namespace Project_SQLBuilder.Forms
                 LoadSelectFieldExpressions();
                 PopulateCustomFields();
                 panelBottomState.BackColor = Color.DarkGreen;
-                lblStatusText.Text = @"Campos salvos.";
+                lblStatusText.Text = @"Campos estão atualizados no banco.";
+                _isTableSwap = false;
             }
             else
             {
                 olvCustomField.ClearObjects();
                 panelBottomState.BackColor = Color.DarkOrange;
                 lblStatusText.Text = @"Campos não salvos.";
+                _isTableSwap = false;
             }
 
             //Verify if the last column is saved on the data-base. This is to prevent wrong coloring when user has added a column but no saved it yet in DB "select_fields".
@@ -246,6 +295,7 @@ namespace Project_SQLBuilder.Forms
             {
                 panelBottomState.BackColor = Color.DarkOrange;
                 lblStatusText.Text = @"Campos não salvos.";
+                _isTableSwap = false;
             }
         }
 
@@ -382,6 +432,12 @@ namespace Project_SQLBuilder.Forms
         //Check destiny table checkboxes and load Insert_tables list.
         private void tscbProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_hasScriptChange)
+            {
+                AlertUnsavedChanges();
+                return;
+            }
+
             _isUiChange = true;
 
             ClearAll();
@@ -661,9 +717,9 @@ namespace Project_SQLBuilder.Forms
             context.SaveChanges();
 
             panelBottomState.BackColor = Color.DarkOrange;
-            lblStatusText.Text = "Campos não salvos.";
+            lblStatusText.Text = @"Campos não salvos.";
 
-            PopulateCustomFields();
+            PopulateSelectField();
         }
 
         //Populate the list of CustomFields.
@@ -677,14 +733,6 @@ namespace Project_SQLBuilder.Forms
                 x.InsertTable.Table == _currentTable && x.InsertTable.FkProject == pId);
 
             olvCustomField.SetObjects(customfields);
-
-            UpdateSelectFieldWithNewCol(customfields);
-        }
-
-        //Updates the SelectGrid with a newly added column.
-        private void UpdateSelectFieldWithNewCol(IQueryable<CustomField> customField)
-        {
-            dgvSelectFields.DataSource = DestinyConn.SelectColumns(_currentTable, customField);
         }
 
         //Removes CustomField and (if exists) its saved SelectFields from the data-base. Reloads SelectGrid to show changes.
@@ -714,7 +762,7 @@ namespace Project_SQLBuilder.Forms
             context.SaveChanges();
 
             olvCustomField.ClearObjects();
-            PopulateCustomFields();
+            PopulateSelectField();
         }
 
         #endregion
@@ -763,6 +811,7 @@ namespace Project_SQLBuilder.Forms
             SaveSelectFieldExpressions();
             panelBottomState.BackColor = Color.DarkGreen;
             lblStatusText.Text = @"Tabela e parametros de conexão salvos.";
+            _hasScriptChange = false;
         }
 
         //Save text above SelectGrid to come before the Insert Expression.
@@ -829,15 +878,15 @@ namespace Project_SQLBuilder.Forms
                     };
 
                     context.SelectFields.AddObject(newField);
-                    context.SaveChanges();
                 }
                 else
                 {
                     updateField.SelectedField = row.Cells[0].Value.ToString();
                     updateField.DefaultValue = row.Cells[1].Value.ToString();
-                    context.SaveChanges();
                 }
             }
+
+            context.SaveChanges();
         }
 
         //Saves the information in the current connection string(s) to the data-base to be loaded when project is selected.
@@ -880,9 +929,6 @@ namespace Project_SQLBuilder.Forms
             //LINQ does not take C# methods as values.
             var pId = GetCurrentProjectId();
 
-            //Avoid incorrect color painting of saving indicator. I literally only use this parameter for this function, and it works flawlessly, should refactor sometime tho.
-            _isTableSwap = true;
-
             var context = new Entities();
             // ReSharper disable once PossibleNullReferenceException
             // Get the insert table fk, cant actually be null because it has to have its checkbox checked (aka in the data-base) in order to get to this.
@@ -915,9 +961,16 @@ namespace Project_SQLBuilder.Forms
 
                 row.Cells[0].Value = selectField.SelectedField;
                 row.Cells[1].Value = selectField.DefaultValue;
-            }
+            }           
+           
+        }
 
-            _isTableSwap = false;
+        //Checks if anything has been changed (using class boolean) and if so stop the operation thats undergoing;
+        private void AlertUnsavedChanges()
+        {
+            panelBottomState.BackColor = Color.DarkRed;
+            lblStatusText.Text = @"Clique novamente para sair sem salvar suas alterações.";
+            _hasScriptChange = false;
         }
 
         #endregion
@@ -1133,6 +1186,6 @@ namespace Project_SQLBuilder.Forms
             return script.ToString();
         }
 
-        #endregion
+        #endregion       
     }
 }

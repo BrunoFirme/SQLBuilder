@@ -120,26 +120,6 @@
   <metadata name="miniToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="btnClose.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAACHSURBVDhPpZNBDoAwCAR5iEev/v/qzU/4F2QbSWhdklpI
-        iImw0y2iqKpUsiTGwRGw24vTcpMkULO8LA93HQEQI24GecWoIQBp2ggA3Rs6yCButQ8ArpNGCqaABJK5
-        6q8Q5zY4oXNJHRAX/wBkDvNXKA2RiX0uU5/RmsqLVF7lpR9rSeQ7gOcD30mnWbUl7MgAAAAASUVORK5C
-        YII=
-</value>
-  </data>
-  <data name="btnMinimize.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAAArSURBVDhPY2AYBaMhMGhC4Nu3b//JwXAPgDQ7OTmRhEF6
-        BpkBFIUBJbEJALRXw5fROBLYAAAAAElFTkSuQmCC
-</value>
-  </data>
   <metadata name="lblProgramTitle.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -149,12 +129,35 @@
   <metadata name="label2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="btnClose.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnMinimize.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAAArSURBVDhPY2AYBaMhMGhC4Nu3b//JwXAPgDQ7OTmRhEF6
+        BpkBFIUBJbEJALRXw5fROBLYAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="btnResize.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAABzSURBVDhPtZNLDoAwCER7Nu5/F3XDlmYSxxilBUWbzKZN
         H8OvmVmrqPQZgQ9A24+qWkZ07QJExGZCgO8BZ9uIvi6bK7y5DnAZWQf0fwCjXFNgWqEDAh53gTWIisdi
         39qYBXDghoDI+hSQGeEh4O1GlrexA0ZkzEGXEl5CAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="btnClose.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="btnClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAACHSURBVDhPpZNBDoAwCAR5iEev/v/qzU/4F2QbSWhdklpI
+        iImw0y2iqKpUsiTGwRGw24vTcpMkULO8LA93HQEQI24GecWoIQBp2ggA3Rs6yCButQ8ArpNGCqaABJK5
+        6q8Q5zY4oXNJHRAX/wBkDvNXKA2RiX0uU5/RmsqLVF7lpR9rSeQ7gOcD30mnWbUl7MgAAAAASUVORK5C
+        YII=
 </value>
   </data>
   <metadata name="MainMenuToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
